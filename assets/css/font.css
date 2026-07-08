@@ -1,0 +1,25 @@
+/* 1. Define the custom font and point to its file path */
+@font-face {
+  font-family: "WorkSans-Regular";
+  src: url("../type/WorkSans-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* Prevents text from being invisible during load */
+}
+
+@font-face {
+  font-family: "WorkSans-Bold";
+  src: url("../type/WorkSans-SemiBold.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap; /* Prevents text from being invisible during load */
+}
+
+@font-face {
+  font-family: "NotoNastaleeq";
+  src: url("../type/NotoNastaliqUrdu-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* Prevents text from being invisible during load */
+}
+

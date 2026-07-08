@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Navees Virtual Keyboard</title>
+    <link rel="stylesheet" href="../assets/css/navees.css" />
+    <!-- Icons -->
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="144x144"
+      href="../assets/img/apple-touch-icon-144-precomposed.png"
+    />
+    <link rel="shortcut icon" href="../assets/img/favicon.ico" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="brand">
+          <div class="mark">نویس</div>
+          <div>
+            <h1>Navees — Virtual Keyboard</h1>
+            <p>A phonetic Urdu layout, built for the screen</p>
+          </div>
+        </div>
+        <div class="credit">
+          Layout devised by Saadat Mateen. Content CC BY-SA 4.0. Original
+          project:
+          <a href="https://saadatm.github.io/navees" target="_blank"
+            >saadatm.github.io/navees</a
+          >
+        </div>
+      </header>
+
+      <div class="stage">
+        <div class="stage-top">
+          <div class="stage-label">Output</div>
+          <div class="toolbar">
+            <button id="copyBtn">Copy</button>
+            <button id="clearBtn">Clear</button>
+          </div>
+        </div>
+        <textarea
+          id="out"
+          placeholder="Tap here to use your phone's keyboard, or use the keys below…"
+        ></textarea>
+        <div class="seal-row">
+          <div class="seal" id="sealBase">B</div>
+          <div class="seal" id="sealShift">S</div>
+          <div class="seal" id="sealAlt">A</div>
+          <div class="layer-name">Active layer: <b id="layerName">Base</b></div>
+        </div>
+      </div>
+
+      <div class="kb" id="kb"></div>
+
+      <footer>
+        Hold <b>Shift</b> for diacritics and alternate letters, and
+        <b>AltGr</b> for honorifics and marks.<br />
+        Physical typing also works: this page listens for your real keyboard and
+        maps it onto the same layout.
+      </footer>
+    </div>
+
+    <script>
+      // ---- Layout data, transcribed from the Navees documentation tables ----
+      // Each entry: [code, widthClass or null, label(base), base, shift, altgr]
+      // blank ("") means the layer has no assigned character for that key.
+      // Diacritic values include a dotted-circle (◌) placeholder ONLY for on-screen legibility;
+      // it is stripped before the character is actually inserted into the text.
+      const rows = [
+        [
+          ["Backquote", null, "`", "`", "◌ً", "~"],
+          ["Digit1", null, "1", "۱", "1", "!"],
+          ["Digit2", null, "2", "۲", "2", "@"],
+          ["Digit3", null, "3", "۳", "3", "#"],
+          ["Digit4", null, "4", "۴", "4", "$"],
+          ["Digit5", null, "5", "۵", "5", "٪"],
+          ["Digit6", null, "6", "۶", "6", "^"],
+          ["Digit7", null, "7", "۷", "7", "&"],
+          ["Digit8", null, "8", "۸", "8", "*"],
+          ["Digit9", null, "9", "۹", "9", "("],
+          ["Digit0", null, "0", "۰", "0", ")"],
+          ["Backspace", "xwide", "⌫", "", "", ""],
+        ],
+        [
+          ["KeyQ", null, "", "ق", "◌ْ", ""],
+          ["KeyW", null, "", "و", "◌ّ", "ؤ"],
+          ["KeyE", null, "", "ع", "◌ٰ", "◌ٖ"],
+          ["KeyR", null, "", "ر", "ڑ", "◌ؓ"],
+          ["KeyT", null, "", "ت", "ٹ", "◌ؔ"],
+          ["KeyY", null, "", "ے", "◌َ", "ۓ"],
+          ["KeyU", null, "", "ء", "ئ", "◌ٔ"],
+          ["KeyI", null, "", "ی", "◌ِ", "◌ؑ"],
+          ["KeyO", null, "", "ہ", "ۃ", "ۂ"],
+          ["KeyP", null, "", "پ", "◌ُ", "◌ٗ"],
+        ],
+        [
+          ["KeyA", null, "", "ا", "آ", "أ"],
+          ["KeyS", null, "", "س", "ص", "◌ؐ"],
+          ["KeyD", null, "", "د", "ڈ", "ﷺ"],
+          ["KeyF", null, "", "ف", "", "؂"],
+          ["KeyG", null, "", "گ", "غ", ""],
+          ["KeyH", null, "", "ح", "ھ", "◌ؒ"],
+          ["KeyJ", null, "", "ج", "ض", "ﷻ"],
+          ["KeyK", null, "", "ک", "خ", "؁"],
+          ["KeyL", null, "", "ل", "", ""],
+          ["Enter", "wide", "Enter", "\n", "\n", "\n"],
+        ],
+        [
+          ["ShiftLeft", "xwide", "Shift", "", "", ""],
+          ["KeyZ", null, "", "ز", "ذ", "؏"],
+          ["KeyX", null, "", "ش", "ژ", "؎"],
+          ["KeyC", null, "", "چ", "ث", "؃"],
+          ["KeyV", null, "", "ط", "ظ", ""],
+          ["KeyB", null, "", "ب", "", "﷽"],
+          ["KeyN", null, "", "ن", "ں", "؀"],
+          ["KeyM", null, "", "م", "◌٘", ""],
+          ["Period", null, ".", "۔", "٫", ">"],
+        ],
+        [
+          ["Space", "space", "Space", " ", "ZWNJ", " "],
+          ["AltRight", "wide", "AltGr", "", "", ""],
+        ],
+      ];
+
+      const ZW = {
+        ZWNJ: "\u200C",
+        ZWJ: "\u200D",
+        LRM: "\u200E",
+        RLM: "\u200F",
+      };
+      function resolve(v) {
+        return ZW[v] !== undefined ? ZW[v] : v;
+      }
+      // Strip the dotted-circle placeholder (U+25CC) used only for on-screen display of diacritics
+      function forInsert(v) {
+        return resolve(v).replace(/\u25CC/g, "");
+      }
+
+      const modKeys = new Set(["ShiftLeft", "AltRight", "Enter", "Backspace"]);
+
+      const kb = document.getElementById("kb");
+      const out = document.getElementById("out");
+      const layerName = document.getElementById("layerName");
+      const sealBase = document.getElementById("sealBase");
+      const sealShift = document.getElementById("sealShift");
+      const sealAlt = document.getElementById("sealAlt");
+
+      let shiftHeld = false,
+        altGrHeld = false;
+      let selStart = 0,
+        selEnd = 0; // tracked manually so we never need to focus() the textarea
+      const keyEls = {};
+
+      function currentLayer() {
+        return altGrHeld ? "altgr" : shiftHeld ? "shift" : "base";
+      }
+
+      function updateSeals() {
+        const l = currentLayer();
+        sealBase.classList.toggle("active", l === "base");
+        sealShift.classList.toggle("active", l === "shift");
+        sealAlt.classList.toggle("active", l === "altgr");
+        layerName.textContent =
+          l === "base" ? "Base" : l === "shift" ? "Shift" : "AltGr";
+        document
+          .querySelectorAll('[data-code="ShiftLeft"]')
+          .forEach((k) => k.classList.toggle("active", shiftHeld));
+        document
+          .querySelectorAll('[data-code="AltRight"]')
+          .forEach((k) => k.classList.toggle("active", altGrHeld));
+      }
+
+      // Sync our tracked selection with the real one whenever the user interacts with the textarea directly
+      out.addEventListener("keyup", syncSel);
+      out.addEventListener("click", syncSel);
+      out.addEventListener("select", syncSel);
+      function syncSel() {
+        selStart = out.selectionStart;
+        selEnd = out.selectionEnd;
+      }
+
+      // Insert without ever calling .focus() -- this is what stops the mobile keyboard popping up
+      // when tapping the on-screen keys. Tapping the textarea itself still opens it normally.
+      function insert(text) {
+        const v = out.value;
+        out.value = v.slice(0, selStart) + text + v.slice(selEnd);
+        selStart = selEnd = selStart + text.length;
+        if (document.activeElement === out) {
+          out.selectionStart = out.selectionEnd = selStart;
+        }
+      }
+      function doBackspace() {
+        const v = out.value;
+        if (selStart === selEnd) {
+          if (selStart === 0) return;
+          out.value = v.slice(0, selStart - 1) + v.slice(selEnd);
+          selStart = selEnd = selStart - 1;
+        } else {
+          out.value = v.slice(0, selStart) + v.slice(selEnd);
+          selEnd = selStart;
+        }
+        if (document.activeElement === out) {
+          out.selectionStart = out.selectionEnd = selStart;
+        }
+      }
+
+      function buildKey(entry) {
+        const [code, width, label, base, shift, altgr] = entry;
+        const el = document.createElement("div");
+        el.className =
+          "key" +
+          (width ? " " + width : "") +
+          (modKeys.has(code) ? " mod" : "");
+        el.dataset.code = code;
+
+        const main = document.createElement("div");
+        main.className = "main";
+        el.appendChild(main);
+
+        const sub = document.createElement("div");
+        sub.className = "sub";
+        sub.textContent = label;
+        el.appendChild(sub);
+        function paint() {
+          // Modifier keys
+          if (code === "ShiftLeft") {
+            main.textContent = "Shift";
+            el.classList.remove("blank");
+            return;
+          }
+
+          if (code === "AltRight") {
+            main.textContent = "AltGr";
+            el.classList.remove("blank");
+            return;
+          }
+
+          // Special keys
+          if (code === "Backspace") {
+            main.textContent = "⌫";
+            el.classList.remove("blank");
+            return;
+          }
+
+          if (code === "Enter") {
+            main.textContent = "⏎";
+            el.classList.remove("blank");
+            return;
+          }
+
+          // Regular keys
+          const l = currentLayer();
+          const val = l === "base" ? base : l === "shift" ? shift : altgr;
+
+          if (!val) {
+            main.textContent = "·";
+            el.classList.add("blank");
+          } else {
+            main.textContent = val;
+            el.classList.remove("blank");
+          }
+        }
+        // function paint() {
+        //   const l = currentLayer();
+        //   const val = l === "base" ? base : l === "shift" ? shift : altgr;
+        //   if (modKeys.has(code) && code !== "Enter" && code !== "Backspace") {
+        //     main.textContent = label;
+        //     el.classList.remove("blank");
+        //   } else if (!val) {
+        //     main.textContent = "·";
+        //     el.classList.add("blank");
+        //   } else {
+        //     el.classList.remove("blank");
+        //     main.textContent =
+        //       code === "Enter" ? "⏎" : code === "Backspace" ? "⌫" : val;
+        //   }
+        // }
+        keyEls[code] = { el, paint, base, shift, altgr };
+
+        // Prevent the browser from shifting focus (and popping the mobile keyboard) on tap
+        el.addEventListener("pointerdown", (e) => e.preventDefault());
+
+        el.addEventListener("click", () => {
+          if (code === "ShiftLeft") {
+            shiftHeld = !shiftHeld;
+            refreshAll();
+            return;
+          }
+          if (code === "AltRight") {
+            altGrHeld = !altGrHeld;
+            refreshAll();
+            return;
+          }
+          if (code === "Backspace") {
+            doBackspace();
+            flash(code);
+            return;
+          }
+          const l = currentLayer();
+          const raw = l === "base" ? base : l === "shift" ? shift : altgr;
+          if (!raw) return;
+          insert(forInsert(raw));
+          flash(code);
+          if (shiftHeld) {
+            shiftHeld = false;
+            refreshAll();
+          }
+        });
+
+        return el;
+      }
+
+      function flash(code) {
+        const k = keyEls[code];
+        if (!k) return;
+        k.el.classList.add("pressed");
+        setTimeout(() => k.el.classList.remove("pressed"), 90);
+      }
+
+      function refreshAll() {
+        Object.values(keyEls).forEach((k) => k.paint());
+        updateSeals();
+      }
+
+      rows.forEach((row) => {
+        const rowEl = document.createElement("div");
+        rowEl.className = "row";
+        row.forEach((entry) => rowEl.appendChild(buildKey(entry)));
+        kb.appendChild(rowEl);
+      });
+      refreshAll();
+      syncSel();
+
+      // ---- physical keyboard passthrough (e.g. a Bluetooth keyboard) ----
+      window.addEventListener("keydown", (e) => {
+        if (e.code === "ShiftLeft" || e.code === "ShiftRight") {
+          shiftHeld = true;
+          refreshAll();
+        }
+        const isAltGr = e.getModifierState && e.getModifierState("AltGraph");
+        if (isAltGr || (e.altKey && e.ctrlKey) || e.code === "AltRight") {
+          altGrHeld = true;
+          refreshAll();
+        }
+
+        const entry = keyEls[e.code];
+        if (!entry) return;
+
+        e.preventDefault();
+        flash(e.code);
+        syncSel();
+
+        if (e.code === "Backspace") {
+          doBackspace();
+          return;
+        }
+
+        const l = currentLayer();
+        const raw =
+          l === "base" ? entry.base : l === "shift" ? entry.shift : entry.altgr;
+        if (raw) insert(forInsert(raw));
+      });
+
+      window.addEventListener("keyup", (e) => {
+        if (e.code === "ShiftLeft" || e.code === "ShiftRight") {
+          shiftHeld = false;
+          refreshAll();
+        }
+        const isAltGr = e.getModifierState && e.getModifierState("AltGraph");
+        if (e.code === "AltRight" && !isAltGr) {
+          altGrHeld = false;
+          refreshAll();
+        }
+      });
+      document.getElementById("copyBtn").addEventListener("click", async () => {
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(out.value);
+          } else {
+            out.select();
+            out.setSelectionRange(0, out.value.length);
+            document.execCommand("copy");
+          }
+        } catch (err) {
+          out.select();
+          out.setSelectionRange(0, out.value.length);
+          document.execCommand("copy");
+        }
+      });
+      // document.getElementById("copyBtn").addEventListener("click", () => {
+      //   out.select();
+      //   navigator.clipboard.writeText(out.value);
+      //   // document.execCommand("copy");
+      // });
+      document.getElementById("clearBtn").addEventListener("click", () => {
+        out.value = "";
+        selStart = selEnd = 0;
+      });
+    </script>
+  </body>
+</html>

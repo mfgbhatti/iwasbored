@@ -1,0 +1,26 @@
+
+#grid-container {
+  display: inline-block;
+  border: 2px solid #333;
+}
+
+.grid-row {
+  display: flex;
+}
+
+.grid-cell {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 8px;
+  color: #aeadad;
+  cursor: pointer;
+}
+
+.grid-cell:hover {
+  background-color: #f0f0f0;
+}

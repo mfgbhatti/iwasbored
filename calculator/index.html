@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Calculator &middot; mfgbhatti</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <link href="http://gmpg.org/xfn/11" rel="profile" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="144x144"
+      href="../assets/img/apple-touch-icon-144-precomposed.png"
+    />
+    <link rel="shortcut icon" href="../assets/img/favicon.ico" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Inter", sans-serif;
+        padding: 20px;
+      }
+
+      .wrapper {
+        width: 380px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 25px;
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.3),
+          0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .wrapper:hover {
+        transform: translateY(-5px);
+        box-shadow:
+          0 30px 80px rgba(0, 0, 0, 0.4),
+          0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+      }
+      .title-container {
+        display: flex;
+        justify-content: space-between;
+      }
+      .calculator-title {
+        color: #4a5568;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        opacity: 0.7;
+      }
+
+      .model {
+        color: #4a5568;
+        opacity: 0.5;
+        font-size: 10px;
+      }
+      /* still need work */
+      .display {
+        width: 100%;
+        height: 120px;
+        margin-bottom: 20px;
+        border-radius: 16px;
+        text-align: right;
+        font-size: 48px;
+        font-weight: 600;
+        padding: 20px 25px;
+        background: #1a202c;
+        color: #e2e8f0;
+        border: none;
+        outline: none;
+        font-family: "Inter", monospace;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        box-shadow:
+          inset 0 2px 10px rgba(0, 0, 0, 0.3),
+          0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+      }
+
+      .display:focus {
+        box-shadow:
+          inset 0 2px 10px rgba(0, 0, 0, 0.4),
+          0 0 0 2px #667eea inset;
+      }
+
+      .display::placeholder {
+        color: #4a5568;
+        font-size: 20px;
+        font-weight: 400;
+      }
+
+      .buttons-w {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+      }
+
+      button {
+        height: 58px;
+        font-size: 20px;
+        font-weight: 600;
+        border: none;
+        border-radius: 14px;
+        cursor: pointer;
+        background: #f7fafc;
+        color: #2d3748;
+        transition: all 0.15s ease;
+        font-family: "Inter", sans-serif;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+      }
+
+      button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.5s,
+          height 0.5s;
+      }
+
+      button:active:not(:disabled)::after {
+        width: 200px;
+        height: 200px;
+      }
+
+      button:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      button:active:not(:disabled) {
+        transform: translateY(0px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      button:not(.operator):not(.equals):not(.clear) {
+        background: #f7fafc;
+        color: #2d3748;
+      }
+
+      button:not(.operator):not(.equals):not(.clear):hover:not(:disabled) {
+        background: #edf2f7;
+      }
+
+      .operator {
+        background: #edf2f7;
+        color: #667eea;
+        font-weight: 700;
+      }
+
+      .operator:hover:not(:disabled) {
+        background: #667eea;
+        color: white;
+      }
+
+      .equals {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        grid-column: span 3 / span 3;
+        grid-column-start: 3;
+        grid-row-start: 5;
+        font-size: 24px;
+        font-weight: 700;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      .equals:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+      }
+
+      .equals:active:not(:disabled) {
+        transform: translateY(0px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .clear {
+        background: linear-gradient(135deg, #fc5c7d 0%, #6a82fb 100%);
+        color: white;
+        grid-column: span 2 / span 2;
+        font-weight: 700;
+        box-shadow: 0 4px 15px rgba(252, 92, 125, 0.3);
+      }
+
+      .clear:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(252, 92, 125, 0.4);
+      }
+
+      .clear:active:not(:disabled) {
+        transform: translateY(0px);
+      }
+
+      .special {
+        background: #e2e8f0;
+        color: #4a5568;
+        font-size: 16px;
+      }
+
+      .special:hover:not(:disabled) {
+        background: #cbd5e0;
+        color: #2d3748;
+      }
+
+      button:disabled {
+        background: #f7fafc;
+        color: #a0aec0;
+        cursor: not-allowed;
+        opacity: 0.6;
+        transform: none !important;
+        box-shadow: none !important;
+      }
+
+      button[data-value="0"] {
+      }
+
+      @media (max-width: 420px) {
+        .wrapper {
+          width: 100%;
+          padding: 15px;
+        }
+
+        .display {
+          height: 100px;
+          font-size: 36px;
+          padding: 15px 20px;
+        }
+
+        button {
+          height: 50px;
+          font-size: 17px;
+        }
+
+        .buttons-w {
+          gap: 8px;
+        }
+      }
+
+      @media (max-width: 350px) {
+        button {
+          height: 42px;
+          font-size: 14px;
+        }
+
+        .display {
+          font-size: 28px;
+          height: 80px;
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .wrapper {
+        animation: fadeIn 0.5s ease-out;
+      }
+
+      .display::-webkit-scrollbar {
+        height: 4px;
+      }
+
+      .display::-webkit-scrollbar-track {
+        background: #2d3748;
+        border-radius: 2px;
+      }
+
+      .display::-webkit-scrollbar-thumb {
+        background: #667eea;
+        border-radius: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper" id="wrapper">
+      <div class="title-container">
+        <div class="calculator-title">✦ Simple Calculator</div>
+        <div class="model">CY17-P</div>
+      </div>
+      <input
+        type="text"
+        class="display"
+        id="display"
+        disabled
+        placeholder="0"
+        autofocus
+      />
+      <div id="buttons-w" class="buttons-w"></div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const display = document.getElementById("display");
+        const buttonsWrapper = document.getElementById("buttons-w");
+
+        const buttons = [
+          "C",
+          "⌫",
+          "π",
+          "√",
+          "7",
+          "8",
+          "9",
+          "%",
+          "x²",
+          "4",
+          "5",
+          "6",
+          "÷",
+          "×",
+          "1",
+          "2",
+          "3",
+          "+",
+          "-",
+          "0",
+          ".",
+          "=",
+        ];
+
+        const operatorButtons = ["+", "-", "÷", "×"];
+        const specialButtons = ["π", "√", "x²", "%", "⌫"];
+
+        buttons.forEach((buttonText) => {
+          const button = document.createElement("button");
+          button.textContent = buttonText;
+
+          if (buttonText === "0") {
+            button.dataset.value = "0";
+          }
+
+          if (operatorButtons.includes(buttonText)) {
+            button.classList.add("operator");
+          }
+
+          if (specialButtons.includes(buttonText)) {
+            button.classList.add("special");
+          }
+
+          if (buttonText === "=") {
+            button.classList.add("equals");
+          } else if (buttonText === "C") {
+            button.classList.add("clear");
+          }
+
+          button.addEventListener("click", () => {
+            button.style.transform = "scale(0.95)";
+            setTimeout(() => {
+              button.style.transform = "";
+            }, 100);
+
+            switch (buttonText) {
+              case "=":
+                calculate();
+                break;
+              case "C":
+                clearDisplay();
+                break;
+              case "⌫":
+                backSpace();
+                break;
+              case "√":
+                getSquareRoot();
+                break;
+              case "x²":
+                powerByTwo();
+                break;
+              case "π":
+                addPi();
+                break;
+              default:
+                appendToDisplay(buttonText);
+            }
+          });
+
+          buttonsWrapper.appendChild(button);
+        });
+
+        document.addEventListener("keydown", (e) => {
+          const key = e.key;
+
+          const keyMap = {
+            Enter: "=",
+            Backspace: "⌫",
+            Escape: "C",
+            "*": "×",
+            "/": "÷",
+            p: "π",
+            P: "π",
+          };
+
+          let buttonText = keyMap[key] || key;
+
+          const buttons = document.querySelectorAll("#buttons-w button");
+          for (let btn of buttons) {
+            if (btn.textContent === buttonText) {
+              btn.click();
+              break;
+            }
+          }
+
+          if (["Enter", "Backspace", "Escape"].includes(key)) {
+            e.preventDefault();
+          }
+        });
+
+        function appendToDisplay(value) {
+          if (value === ".") {
+            const parts = display.value.split(/[+\-÷×]/);
+            const lastPart = parts[parts.length - 1];
+            if (lastPart.includes(".")) return;
+          }
+
+          if (
+            operatorButtons.includes(value) &&
+            operatorButtons.includes(display.value.slice(-1))
+          ) {
+            return;
+          }
+          // NOTE: may be review it
+          if (
+            value === "π" &&
+            display.value !== "" &&
+            /[\d.]$/.test(display.value)
+          ) {
+            display.value += "×";
+          }
+
+          display.value += value;
+          updateDisplayPlaceholder();
+        }
+
+        function getSquareRoot() {
+          const value = parseFloat(display.value);
+          if (isNaN(value) || value < 0) {
+            display.value = "Error";
+            setTimeout(clearDisplay, 1500);
+            return;
+          }
+          const result = Math.sqrt(value);
+          display.value = result % 1 !== 0 ? result.toFixed(4) : String(result);
+          updateDisplayPlaceholder();
+        }
+
+        function powerByTwo() {
+          const value = parseFloat(display.value);
+          if (isNaN(value)) {
+            display.value = "Error";
+            setTimeout(clearDisplay, 1500);
+            return;
+          }
+          const result = value * value;
+          display.value = result % 1 !== 0 ? result.toFixed(4) : String(result);
+          updateDisplayPlaceholder();
+        }
+
+        function addPi() {
+          if (display.value === "" || /[\d.]$/.test(display.value)) {
+            display.value += "×3.1416";
+          } else {
+            display.value += "3.1416";
+          }
+          updateDisplayPlaceholder();
+        }
+
+        function backSpace() {
+          display.value = display.value.slice(0, -1);
+          updateDisplayPlaceholder();
+        }
+
+        function clearDisplay() {
+          display.value = "";
+          updateDisplayPlaceholder();
+        }
+
+        function updateDisplayPlaceholder() {
+          display.placeholder = display.value === "" ? "0" : "";
+        }
+
+        function calculate() {
+          try {
+            let expression = display.value
+              .replace(/×/g, "*")
+              .replace(/÷/g, "/")
+              .replace(/π/g, "3.1416");
+
+            if (!/^[\d.+\-*/%]+$/.test(expression)) {
+              throw new Error("Invalid expression");
+            }
+
+            if (expression.includes("/0")) {
+              throw new Error("Division by zero");
+            }
+
+            const result = new Function(`return (${expression})`)();
+
+            if (!isFinite(result)) {
+              throw new Error("Division by zero");
+            }
+
+            display.value =
+              result % 1 !== 0 ? result.toFixed(4) : String(result);
+            updateDisplayPlaceholder();
+          } catch (error) {
+            display.value = "Error";
+            setTimeout(clearDisplay, 1500);
+            console.error("Calculation error:", error);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
+<!--  vim: set ts=2 sts=2 sw=2 et : -->

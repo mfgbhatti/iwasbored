@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>CSS Color Converter &middot; mfgbhatti</title>
+    <!-- Enable responsiveness on mobile devices-->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <link href="http://gmpg.org/xfn/11" rel="profile" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <!-- Icons -->
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="144x144"
+      href="../assets/img/apple-touch-icon-144-precomposed.png"
+    />
+    <link rel="shortcut icon" href="../assets/img/favicon.ico" />
+    <!-- Google Font for better typography -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Inter", sans-serif;
+        padding: 20px;
+        transition: background 0.5s ease;
+      }
+
+      .wrapper {
+        width: 420px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 30px;
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.3),
+          0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        animation: fadeIn 0.5s ease-out;
+      }
+
+      .wrapper:hover {
+        transform: translateY(-5px);
+        box-shadow:
+          0 30px 80px rgba(0, 0, 0, 0.4),
+          0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* Header */
+      .converter-title {
+        text-align: center;
+        color: #4a5568;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 25px;
+        opacity: 0.7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .converter-title i {
+        font-size: 18px;
+        color: #667eea;
+      }
+
+      /* Color Preview */
+      .color-preview {
+        width: 100%;
+        height: 80px;
+        border-radius: 16px;
+        margin-bottom: 25px;
+        background: #667eea;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        transition:
+          background 0.5s ease,
+          box-shadow 0.5s ease;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      /* Input Groups */
+      .input-group {
+        margin-bottom: 20px;
+      }
+
+      .input-group:last-of-type {
+        margin-bottom: 25px;
+      }
+
+      .input-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #2d3748;
+      }
+
+      .input-label span:first-child {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .input-label span:first-child i {
+        color: #667eea;
+        font-size: 14px;
+      }
+
+      .input-label .format-hint {
+        font-weight: 400;
+        color: #a0aec0;
+        font-size: 12px;
+      }
+
+      .input-wrapper {
+        position: relative;
+      }
+
+      .color-input {
+        width: 100%;
+        height: 56px;
+        padding: 0 20px;
+        border: 2px solid #e2e8f0;
+        border-radius: 14px;
+        font-size: 16px;
+        font-weight: 500;
+        font-family: "Inter", monospace;
+        background: white;
+        color: #2d3748;
+        transition: all 0.3s ease;
+        outline: none;
+        letter-spacing: 1px;
+      }
+
+      .color-input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .color-input::placeholder {
+        color: #a0aec0;
+        font-weight: 400;
+        letter-spacing: 0;
+      }
+
+      .color-input.error {
+        border-color: #fc8181;
+        box-shadow: 0 0 0 3px rgba(252, 129, 129, 0.1);
+      }
+
+      /* Color Picker */
+      .color-picker-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: 5px;
+      }
+
+      .color-picker-input {
+        width: 50px;
+        height: 50px;
+        padding: 0;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        cursor: pointer;
+        background: none;
+        transition: border-color 0.3s ease;
+      }
+
+      .color-picker-input::-webkit-color-swatch-wrapper {
+        padding: 2px;
+      }
+
+      .color-picker-input::-webkit-color-swatch {
+        border: none;
+        border-radius: 8px;
+      }
+
+      .color-picker-input::-moz-color-swatch {
+        border: none;
+        border-radius: 8px;
+      }
+
+      .color-picker-input:hover {
+        border-color: #667eea;
+      }
+
+      .color-picker-label {
+        font-size: 13px;
+        color: #4a5568;
+        font-weight: 500;
+      }
+
+      /* Validation Messages */
+      .validation-message {
+        font-size: 12px;
+        font-weight: 500;
+        margin-top: 6px;
+        min-height: 18px;
+        transition: all 0.3s ease;
+      }
+
+      .validation-message.error {
+        color: #fc8181;
+      }
+
+      .validation-message.success {
+        color: #48bb78;
+      }
+
+      /* Buttons */
+      .action-buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 5px;
+      }
+
+      .action-btn {
+        flex: 1;
+        height: 48px;
+        border: none;
+        border-radius: 14px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: "Inter", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .action-btn.primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .action-btn.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .action-btn.primary:active {
+        transform: translateY(0px);
+      }
+
+      .action-btn.secondary {
+        background: #f7fafc;
+        color: #4a5568;
+        border: 2px solid #e2e8f0;
+      }
+
+      .action-btn.secondary:hover {
+        background: #edf2f7;
+        border-color: #cbd5e0;
+      }
+
+      .action-btn i {
+        font-size: 16px;
+      }
+
+      /* Responsive */
+      @media (max-width: 460px) {
+        .wrapper {
+          width: 100%;
+          padding: 20px;
+        }
+
+        .color-input {
+          font-size: 14px;
+          height: 50px;
+        }
+
+        .action-btn {
+          height: 44px;
+          font-size: 13px;
+        }
+
+        .converter-title {
+          font-size: 12px;
+        }
+
+        .color-preview {
+          height: 60px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="converter-title">
+        <i class="fas fa-palette"></i>
+        Color Converter
+        <i class="fas fa-sync-alt"></i>
+      </div>
+
+      <div class="color-preview" id="colorPreview"></div>
+
+      <div class="input-group">
+        <div class="input-label">
+          <span><i class="fas fa-hashtag"></i> HEX</span>
+          <span class="format-hint">#RRGGBB</span>
+        </div>
+        <div class="input-wrapper">
+          <input
+            type="text"
+            class="color-input"
+            id="hexInput"
+            placeholder="#667eea"
+            maxlength="7"
+            value="#667eea"
+          />
+        </div>
+        <div class="validation-message" id="hexMessage"></div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">
+          <span><i class="fas fa-ruler-combined"></i> RGB</span>
+          <span class="format-hint">rgb(0, 0, 0)</span>
+        </div>
+        <div class="input-wrapper">
+          <input
+            type="text"
+            class="color-input"
+            id="rgbInput"
+            placeholder="rgb(102, 126, 234)"
+            value="rgb(102, 126, 234)"
+          />
+        </div>
+        <div class="validation-message" id="rgbMessage"></div>
+      </div>
+
+      <div class="color-picker-wrapper">
+        <input
+          type="color"
+          class="color-picker-input"
+          id="colorPicker"
+          value="#667eea"
+        />
+        <span class="color-picker-label">Pick a color</span>
+      </div>
+
+      <div class="action-buttons" style="margin-top: 20px">
+        <button class="action-btn secondary" id="resetBtn">
+          <i class="fas fa-undo"></i> Reset
+        </button>
+        <button class="action-btn primary" id="applyBtn">
+          <i class="fas fa-check"></i> Apply
+        </button>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const hexInput = document.getElementById("hexInput");
+        const rgbInput = document.getElementById("rgbInput");
+        const colorPicker = document.getElementById("colorPicker");
+        const colorPreview = document.getElementById("colorPreview");
+        const hexMessage = document.getElementById("hexMessage");
+        const rgbMessage = document.getElementById("rgbMessage");
+        const resetBtn = document.getElementById("resetBtn");
+        const applyBtn = document.getElementById("applyBtn");
+
+        let currentColor = "#667eea";
+
+        updateColor(currentColor);
+
+        hexInput.addEventListener("input", function () {
+          const value = this.value.trim();
+          if (value === "") {
+            hexMessage.textContent = "";
+            hexMessage.className = "validation-message";
+            this.classList.remove("error");
+            return;
+          }
+
+          if (isValidHex(value)) {
+            const rgb = hexToRgb(value);
+            if (rgb) {
+              const rgbString = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+              rgbInput.value = rgbString;
+              hexMessage.textContent = "✓ Valid HEX color";
+              hexMessage.className = "validation-message success";
+              this.classList.remove("error");
+              updateColor(value);
+            }
+          } else {
+            hexMessage.textContent = "✗ Invalid HEX format (use #RRGGBB)";
+            hexMessage.className = "validation-message error";
+            this.classList.add("error");
+          }
+        });
+
+        rgbInput.addEventListener("input", function () {
+          const value = this.value.trim();
+          if (value === "") {
+            rgbMessage.textContent = "";
+            rgbMessage.className = "validation-message";
+            this.classList.remove("error");
+            return;
+          }
+
+          const rgb = parseRgb(value);
+          if (rgb) {
+            const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
+            hexInput.value = hex;
+            rgbMessage.textContent = "✓ Valid RGB color";
+            rgbMessage.className = "validation-message success";
+            this.classList.remove("error");
+            updateColor(hex);
+          } else {
+            rgbMessage.textContent = "✗ Invalid RGB format (use rgb(0, 0, 0))";
+            rgbMessage.className = "validation-message error";
+            this.classList.add("error");
+          }
+        });
+
+        colorPicker.addEventListener("input", function () {
+          const color = this.value;
+          hexInput.value = color;
+          const rgb = hexToRgb(color);
+          if (rgb) {
+            rgbInput.value = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+            hexMessage.textContent = "";
+            hexMessage.className = "validation-message";
+            hexInput.classList.remove("error");
+            rgbMessage.textContent = "";
+            rgbMessage.className = "validation-message";
+            rgbInput.classList.remove("error");
+            updateColor(color);
+          }
+        });
+
+        applyBtn.addEventListener("click", function () {
+          const hex = hexInput.value.trim();
+          if (isValidHex(hex)) {
+            updateColor(hex);
+          } else {
+            const rgb = parseRgb(rgbInput.value.trim());
+            if (rgb) {
+              const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
+              hexInput.value = hex;
+              updateColor(hex);
+            }
+          }
+        });
+
+        resetBtn.addEventListener("click", function () {
+          const defaultColor = "#667eea";
+          hexInput.value = defaultColor;
+          const rgb = hexToRgb(defaultColor);
+          rgbInput.value = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+          colorPicker.value = defaultColor;
+          hexMessage.textContent = "";
+          hexMessage.className = "validation-message";
+          hexInput.classList.remove("error");
+          rgbMessage.textContent = "";
+          rgbMessage.className = "validation-message";
+          rgbInput.classList.remove("error");
+          updateColor(defaultColor);
+        });
+
+        function updateColor(color) {
+          currentColor = color;
+          colorPreview.style.background = color;
+          colorPicker.value = color;
+          document.body.style.background = `linear-gradient(135deg, ${color} 0%, ${adjustColor(color, -30)} 100%)`;
+
+          colorPreview.style.boxShadow = `0 4px 15px ${color}66`;
+        }
+
+        function isValidHex(hex) {
+          return /^#([A-Fa-f0-9]{6})$/.test(hex);
+        }
+
+        function hexToRgb(hex) {
+          const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+          return result
+            ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16),
+              }
+            : null;
+        }
+
+        function rgbToHex(r, g, b) {
+          const toHex = (c) => {
+            const hex = c.toString(16);
+            return hex.length === 1 ? "0" + hex : hex;
+          };
+          return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+        }
+
+        function parseRgb(rgbString) {
+          rgbString = rgbString.toLowerCase().replace(/\s/g, "");
+
+          const match = rgbString.match(
+            /^rgb\((\d{1,3}),(\d{1,3}),(\d{1,3})\)$/,
+          );
+          if (!match) return null;
+
+          const r = parseInt(match[1]);
+          const g = parseInt(match[2]);
+          const b = parseInt(match[3]);
+
+          // Validate ranges
+          if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
+            return null;
+          }
+
+          return { r, g, b };
+        }
+
+        function adjustColor(color, amount) {
+          const rgb = hexToRgb(color);
+          if (!rgb) return color;
+
+          const r = Math.max(0, Math.min(255, rgb.r + amount));
+          const g = Math.max(0, Math.min(255, rgb.g + amount));
+          const b = Math.max(0, Math.min(255, rgb.b + amount));
+
+          return rgbToHex(r, g, b);
+        }
+
+        hexInput.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            applyBtn.click();
+          }
+        });
+
+        rgbInput.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            applyBtn.click();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
