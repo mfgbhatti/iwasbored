@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <title>240V Load Calculator</title>
+    <meta name="claude:viewport-fit-sides" content="cover" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <header>
+        <div>
+          <div class="eyebrow">Single phase</div>
+          <h1>Load calculation & DB suggestion</h1>
+        </div>
+        <div class="settings">
+          <div class="volt">
+            <label for="volts">Supply</label>
+            <input
+              id="volts"
+              type="number"
+              inputmode="decimal"
+              min="1"
+              step="any"
+              value="230"
+              aria-invalid="false"
+              aria-describedby="vmsg"
+            />
+            <span class="unit">V</span>
+            <p class="vmsg" id="vmsg" hidden>Enter a voltage above 0.</p>
+          </div>
+          <div class="volt">
+            <label for="diversity">Diversity</label>
+            <input
+              id="diversity"
+              type="number"
+              inputmode="decimal"
+              min="10"
+              max="100"
+              step="5"
+              value="60"
+              title="Share of the connected load expected to run at the same time"
+              aria-invalid="false"
+              aria-describedby="dmsg"
+            />
+            <span class="unit">%</span>
+            <p class="vmsg" id="dmsg" hidden>Enter 10 to 100.</p>
+          </div>
+        </div>
+      </header>
+      <p class="lede">
+        Pick an appliance and its watts fill in. Change the watts or quantity to
+        match your equipment, and use Add appliance for more rows. The
+        distribution board design below updates as you go.
+      </p>
+
+      <section class="card" aria-label="Appliances">
+        <div class="head" aria-hidden="true">
+          <span>Appliance</span><span>Watts each</span><span>Qty</span
+          ><span>Subtotal</span><span></span>
+        </div>
+        <div id="rows"></div>
+        <div class="foot">
+          <button id="add" type="button" class="add">+ Add appliance</button>
+        </div>
+      </section>
+
+      <section class="totals" aria-label="Totals">
+        <div>
+          <div class="tl">Connected load</div>
+          <div class="big">
+            <span id="totW">0</span><span class="u">W</span>
+          </div>
+          <div class="sm" id="totKW">0.00 kW</div>
+        </div>
+        <div>
+          <div class="tl">Connected current</div>
+          <div class="big amp">
+            <span id="totA">0.00</span><span class="u">A</span>
+          </div>
+          <div class="sm">at <span id="vShow">240</span> V</div>
+        </div>
+        <div>
+          <div class="tl">Max demand</div>
+          <div class="big">
+            <span id="totD">0.00</span><span class="u">A</span>
+          </div>
+          <div class="sm">
+            <span id="totDW">0 W</span> at <span id="divShow">60</span>%
+          </div>
+        </div>
+        <p class="hint" id="hint"></p>
+      </section>
+
+      <section id="design" aria-label="Distribution board design"></section>
+
+      <p class="foot-note">
+        Amps = watts ÷ volts. The totals assume a power factor of 1. Diversity is
+        the share of the connected load expected to run at the same time; it sets
+        the main breaker, not the individual circuits. Motors and compressors
+        draw several times their rating for a moment at start-up.
+      </p>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
