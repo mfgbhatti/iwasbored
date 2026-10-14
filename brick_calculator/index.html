@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Brick Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>🧱 Brick Calculator</h1>
+        <p>
+          Estimate how many bricks you need for a wall, including openings,
+          mortar joints and wastage.
+        </p>
+      </header>
+
+      <div class="grid">
+        <!-- INPUTS -->
+        <div>
+          <section class="card">
+            <h2>💰 Material prices</h2>
+            <div class="row">
+              <div>
+                <label for="pBrick">Brick price</label>
+                <input id="pBrick" type="number" min="0" step="any" value="20" />
+              </div>
+              <div>
+                <label for="pSand">Sand price</label>
+                <input id="pSand" type="number" min="0" step="any" value="100" />
+              </div>
+              <div>
+                <label for="pCement">Cement price per bag</label>
+                <input
+                  id="pCement"
+                  type="number"
+                  min="0"
+                  step="any"
+                  value="1400"
+                />
+              </div>
+            </div>
+            <div class="row" style="margin-top: 10px">
+              <div>
+                <label for="pBrickBasis">Brick price is</label>
+                <select id="pBrickBasis">
+                  <option value="1">per brick</option>
+                  <option value="1000">per 1000 bricks</option>
+                </select>
+              </div>
+              <div>
+                <label for="pSandBasis">Sand price is</label>
+                <select id="pSandBasis">
+                  <option value="ft3">per ft³</option>
+                  <option value="100ft3">per 100 ft³</option>
+                  <option value="m3">per m³</option>
+                </select>
+              </div>
+              <div>
+                <label for="currency">Currency</label>
+                <input id="currency" type="text" maxlength="6" value="Rs" />
+              </div>
+            </div>
+            <p class="hint">
+              Sample prices &mdash; replace them with your local rates. Cement is
+              priced per 50 kg bag. Your prices are remembered in this browser.
+            </p>
+          </section>
+
+          <section class="card">
+            <h2><span class="step">1</span> Wall dimensions</h2>
+            <div class="field">
+              <label for="wallUnit"
+                >Unit (same for length, height, thickness)</label
+              >
+              <select id="wallUnit">
+                <option value="ft" selected>Feet (ft)</option>
+                <option value="in">Inches (in)</option>
+                <option value="m">Metres (m)</option>
+                <option value="cm">Centimetres (cm)</option>
+                <option value="mm">Millimetres (mm)</option>
+              </select>
+            </div>
+            <div class="row">
+              <div>
+                <label for="wl">Length</label
+                ><input id="wl" type="number" min="0" step="any" value="20" />
+              </div>
+              <div>
+                <label for="wh">Height</label
+                ><input id="wh" type="number" min="0" step="any" value="10" />
+              </div>
+              <div>
+                <label for="wt">Thickness</label
+                ><input id="wt" type="number" min="0" step="any" value="0.75" />
+              </div>
+            </div>
+            <div class="field" style="margin-top: 10px">
+              <label for="wallType">Thickness shortcut</label>
+              <select id="wallType">
+                <option value="">Custom</option>
+                <option value="4.5">4.5 in single-brick wall</option>
+                <option value="9">9 in double-brick wall</option>
+              </select>
+            </div>
+          </section>
+
+          <section class="card">
+            <h2><span class="step">2</span> Openings (doors &amp; windows)</h2>
+            <div class="openings" id="openings"></div>
+            <button class="btn-add" id="addOpening" type="button">
+              + Add opening
+            </button>
+            <p class="hint">
+              Opening sizes use the wall unit above. Their volume is subtracted
+              from the wall.
+            </p>
+          </section>
+
+          <section class="card">
+            <h2><span class="step">3</span> Brick &amp; mortar</h2>
+            <div class="row two">
+              <div class="field">
+                <label for="preset">Brick size preset</label>
+                <select id="preset">
+                  <option value="9,4.5,3,in">Standard 9 × 4.5 × 3 in</option>
+                  <option value="190,90,90,mm">Modular 190 × 90 × 90 mm</option>
+                  <option value="215,102.5,65,mm">
+                    UK 215 × 102.5 × 65 mm
+                  </option>
+                  <option value="230,110,70,mm">
+                    Metric 230 × 110 × 70 mm
+                  </option>
+                  <option value="custom">Custom…</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="bUnit">Brick unit</label>
+                <select id="bUnit">
+                  <option value="in">Inches</option>
+                  <option value="mm">Millimetres</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <label for="bl">Brick length</label
+                ><input id="bl" type="number" min="0" step="any" value="9" />
+              </div>
+              <div>
+                <label for="bw">Brick width</label
+                ><input id="bw" type="number" min="0" step="any" value="4.5" />
+              </div>
+              <div>
+                <label for="bh">Brick height</label
+                ><input id="bh" type="number" min="0" step="any" value="3" />
+              </div>
+            </div>
+            <div class="row two" style="margin-top: 10px">
+              <div>
+                <label for="mortar">Mortar joint (in brick unit)</label
+                ><input
+                  id="mortar"
+                  type="number"
+                  min="0"
+                  step="any"
+                  value="0.5"
+                />
+              </div>
+              <div>
+                <label for="waste">Wastage (%)</label
+                ><input
+                  id="waste"
+                  type="number"
+                  min="0"
+                  max="50"
+                  step="any"
+                  value="7.5"
+                />
+              </div>
+            </div>
+            <p class="hint">
+              Typical joint: 10 mm or 0.5 in. Wastage: 5–10% for breakage, cuts
+              and site loss.
+            </p>
+          </section>
+
+          <section class="card">
+            <h2><span class="step">4</span> Mortar mix (optional)</h2>
+            <div class="row two">
+              <div>
+                <label for="mix">Cement : Sand ratio</label>
+                <select id="mix">
+                  <option value="3,1,4">1 : 3</option>
+                  <option value="4,1,5" selected>1 : 4</option>
+                  <option value="5,1,6">1 : 5</option>
+                  <option value="6,1,7">1 : 6</option>
+                </select>
+              </div>
+              <div>
+                <label for="dry">Dry volume factor</label>
+                <input
+                  id="dry"
+                  type="number"
+                  min="1"
+                  step="0.01"
+                  value="1.27"
+                />
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- RESULTS -->
+        <div>
+          <div class="result-main">
+            <div class="sub">Bricks needed (with wastage)</div>
+            <div class="big" id="finalBricks">0</div>
+            <div class="sub" id="baseBricks">0 bricks before wastage</div>
+            <div class="alt" id="altCount"></div>
+            <div class="cost" id="costLine"></div>
+          </div>
+
+          <section class="card">
+            <h2>Step-by-step working</h2>
+            <table id="working"></table>
+            <div class="warn" id="warn"></div>
+          </section>
+
+          <section class="card">
+            <h2>Rule-of-thumb check</h2>
+            <div
+              id="thumb"
+              class="hint"
+              style="font-size: 0.9rem; margin: 0"
+            ></div>
+          </section>
+
+          <section class="card">
+            <h2>Mortar estimate</h2>
+            <table id="mortarTable"></table>
+          </section>
+
+          <section class="card">
+            <h2>Cost estimate</h2>
+            <table id="costTable"></table>
+          </section>
+
+          <section class="card">
+            <h2>Tips</h2>
+            <ul class="tips">
+              <li>Measure everything in the same unit before calculating.</li>
+              <li>
+                Subtract door and window volumes; large openings change the
+                total noticeably.
+              </li>
+              <li>
+                Order a little extra from the same batch so colour and size stay
+                consistent.
+              </li>
+            </ul>
+          </section>
+
+          <div class="actions">
+            <button type="button" id="printBtn">Print</button>
+            <button type="button" id="copyBtn" class="primary">
+              Copy summary
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="print-estimates.js"></script>
+  </body>
+</html>
