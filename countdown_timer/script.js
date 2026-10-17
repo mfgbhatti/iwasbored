@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const newDate = "1 Jan 2026";
+  const newDate = "1 Jan 2027";
   const daysEL = document.getElementById("days");
   const hoursEL = document.getElementById("hours");
   const minutesEL = document.getElementById("minutes");
