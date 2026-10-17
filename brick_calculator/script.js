@@ -11,19 +11,19 @@
     const div = document.createElement('div')
     div.className = 'opening'
     div.innerHTML =
-      '<div><label>Label</label><input class="o-name" type="text" value="' +
+      '<div><label class="label">Label</label><input class="input o-name" type="text" value="' +
       name +
       '"></div>' +
-      '<div><label>Width</label><input class="o-w" type="number" min="0" step="any" value="' +
+      '<div><label class="label">Width</label><input class="input o-w" type="number" min="0" step="any" value="' +
       w +
       '"></div>' +
-      '<div><label>Height</label><input class="o-h" type="number" min="0" step="any" value="' +
+      '<div><label class="label">Height</label><input class="input o-h" type="number" min="0" step="any" value="' +
       h +
       '"></div>' +
-      '<div><label>Qty</label><input class="o-q" type="number" min="0" step="1" value="' +
+      '<div><label class="label">Qty</label><input class="input o-q" type="number" min="0" step="1" value="' +
       q +
       '"></div>' +
-      '<button type="button" class="del" aria-label="Remove opening">✕</button>'
+      '<button type="button" class="btn btn--danger del" aria-label="Remove opening">✕</button>'
     div.querySelector('.del').addEventListener('click', () => {
       div.remove()
       calc()

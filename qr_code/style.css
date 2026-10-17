@@ -1,7 +1,10 @@
+.grid-card {
+  overflow-x: auto;
+}
 
 #grid-container {
   display: inline-block;
-  border: 2px solid #333;
+  border: 2px solid var(--border);
 }
 
 .grid-row {
@@ -9,18 +12,19 @@
 }
 
 .grid-cell {
+  flex: none;
   width: 30px;
   height: 30px;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
+  border: 1px solid var(--border);
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 8px;
-  color: #aeadad;
+  color: var(--muted);
   cursor: pointer;
 }
 
 .grid-cell:hover {
-  background-color: #f0f0f0;
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
 }

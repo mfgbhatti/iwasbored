@@ -97,7 +97,7 @@
       '<div class="cell name"><label for="a' +
       id +
       '">Appliance</label>' +
-      '<select id="a' +
+      '<select class="select" id="a' +
       id +
       '" data-f="app">' +
       optionsHTML(index) +
@@ -105,7 +105,7 @@
       '<div class="cell watts"><label for="w' +
       id +
       '">Watts each</label>' +
-      '<input id="w' +
+      '<input class="input num" id="w' +
       id +
       '" data-f="watts" type="number" inputmode="decimal" min="0" step="any" value="' +
       watts +
@@ -113,13 +113,13 @@
       '<div class="cell qty"><label for="q' +
       id +
       '">Qty</label>' +
-      '<input id="q' +
+      '<input class="input num" id="q' +
       id +
       '" data-f="qty" type="number" inputmode="numeric" min="0" step="1" value="' +
       qty +
       '"></div>' +
       '<output class="sub" data-f="sub"></output>' +
-      '<button type="button" class="rm" data-f="rm" aria-label="Remove appliance">×</button>'
+      '<button type="button" class="btn btn--danger rm" data-f="rm" aria-label="Remove appliance">×</button>'
     rowsEl.appendChild(el)
     if (focus) el.querySelector('select').focus()
   }
@@ -462,11 +462,11 @@
       head +
       facts +
       '<h3>Incomer and protection</h3>' +
-      '<div class="tbl"><table><thead><tr><th>Part</th><th>Rating</th><th>Notes</th></tr></thead><tbody>' +
+      '<div class="tbl table-wrap"><table class="table"><thead><tr><th>Part</th><th>Rating</th><th>Notes</th></tr></thead><tbody>' +
       incomer.join('') +
       '</tbody></table></div>' +
       '<h3>Circuit schedule</h3>' +
-      '<div class="tbl"><table><thead><tr><th>Ckt</th><th>Load</th><th>Current</th><th>MCB (SP)</th><th>Cable</th><th>RCD</th></tr></thead><tbody>' +
+      '<div class="tbl table-wrap"><table class="table"><thead><tr><th>Ckt</th><th>Load</th><th>Current</th><th>MCB (SP)</th><th>Cable</th><th>RCD</th></tr></thead><tbody>' +
       schedule.join('') +
       '</tbody></table></div>' +
       '<h3>Board layout</h3>' +

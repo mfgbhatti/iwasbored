@@ -3,36 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Brick Calculator</title>
+    <title>Brick Calculator &middot; mfgbhatti</title>
+    <link rel="stylesheet" href="../assets/css/site.css" />
     <link rel="stylesheet" href="style.css" />
+    <script src="../assets/js/theme.js"></script>
+    <!-- Icons -->
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="144x144"
+      href="../assets/img/apple-touch-icon-144-precomposed.png"
+    />
+    <link rel="shortcut icon" href="../assets/img/favicon.ico" />
   </head>
   <body>
-    <div class="wrap">
-      <header>
-        <h1>🧱 Brick Calculator</h1>
+    <main class="page page--wide wrap">
+      <div class="site-bar">
+        <a class="back" href="../">&larr; projects</a>
+        <button class="theme-toggle" type="button" data-theme-toggle>
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+      <header class="page-head">
+        <h1>brick calculator</h1>
         <p>
-          Estimate how many bricks you need for a wall, including openings,
+          estimate how many bricks you need for a wall, including openings,
           mortar joints and wastage.
         </p>
       </header>
 
-      <div class="grid">
+      <div class="layout">
         <!-- INPUTS -->
         <div>
           <section class="card">
-            <h2>💰 Material prices</h2>
-            <div class="row">
-              <div>
-                <label for="pBrick">Brick price</label>
-                <input id="pBrick" type="number" min="0" step="any" value="20" />
+            <h3 class="card__title">Material prices</h3>
+            <div class="cols-3">
+              <div class="field">
+                <label class="label" for="pBrick">Brick price</label>
+                <input class="input" id="pBrick" type="number" min="0" step="any" value="20" />
               </div>
-              <div>
-                <label for="pSand">Sand price</label>
-                <input id="pSand" type="number" min="0" step="any" value="100" />
+              <div class="field">
+                <label class="label" for="pSand">Sand price</label>
+                <input class="input" id="pSand" type="number" min="0" step="any" value="100" />
               </div>
-              <div>
-                <label for="pCement">Cement price per bag</label>
-                <input
+              <div class="field">
+                <label class="label" for="pCement">Cement price per bag</label>
+                <input class="input"
                   id="pCement"
                   type="number"
                   min="0"
@@ -41,25 +57,25 @@
                 />
               </div>
             </div>
-            <div class="row" style="margin-top: 10px">
-              <div>
-                <label for="pBrickBasis">Brick price is</label>
-                <select id="pBrickBasis">
+            <div class="cols-3 gap-top">
+              <div class="field">
+                <label class="label" for="pBrickBasis">Brick price is</label>
+                <select class="select" id="pBrickBasis">
                   <option value="1">per brick</option>
                   <option value="1000">per 1000 bricks</option>
                 </select>
               </div>
-              <div>
-                <label for="pSandBasis">Sand price is</label>
-                <select id="pSandBasis">
+              <div class="field">
+                <label class="label" for="pSandBasis">Sand price is</label>
+                <select class="select" id="pSandBasis">
                   <option value="ft3">per ft³</option>
                   <option value="100ft3">per 100 ft³</option>
                   <option value="m3">per m³</option>
                 </select>
               </div>
-              <div>
-                <label for="currency">Currency</label>
-                <input id="currency" type="text" maxlength="6" value="Rs" />
+              <div class="field">
+                <label class="label" for="currency">Currency</label>
+                <input class="input" id="currency" type="text" maxlength="6" value="Rs" />
               </div>
             </div>
             <p class="hint">
@@ -69,12 +85,12 @@
           </section>
 
           <section class="card">
-            <h2><span class="step">1</span> Wall dimensions</h2>
+            <h3 class="card__title"><span class="step badge">1</span> Wall dimensions</h3>
             <div class="field">
-              <label for="wallUnit"
+              <label class="label" for="wallUnit"
                 >Unit (same for length, height, thickness)</label
               >
-              <select id="wallUnit">
+              <select class="select" id="wallUnit">
                 <option value="ft" selected>Feet (ft)</option>
                 <option value="in">Inches (in)</option>
                 <option value="m">Metres (m)</option>
@@ -82,23 +98,23 @@
                 <option value="mm">Millimetres (mm)</option>
               </select>
             </div>
-            <div class="row">
-              <div>
-                <label for="wl">Length</label
-                ><input id="wl" type="number" min="0" step="any" value="20" />
+            <div class="cols-3">
+              <div class="field">
+                <label class="label" for="wl">Length</label
+                ><input class="input" id="wl" type="number" min="0" step="any" value="20" />
               </div>
-              <div>
-                <label for="wh">Height</label
-                ><input id="wh" type="number" min="0" step="any" value="10" />
+              <div class="field">
+                <label class="label" for="wh">Height</label
+                ><input class="input" id="wh" type="number" min="0" step="any" value="10" />
               </div>
-              <div>
-                <label for="wt">Thickness</label
-                ><input id="wt" type="number" min="0" step="any" value="0.75" />
+              <div class="field">
+                <label class="label" for="wt">Thickness</label
+                ><input class="input" id="wt" type="number" min="0" step="any" value="0.75" />
               </div>
             </div>
-            <div class="field" style="margin-top: 10px">
-              <label for="wallType">Thickness shortcut</label>
-              <select id="wallType">
+            <div class="field gap-top">
+              <label class="label" for="wallType">Thickness shortcut</label>
+              <select class="select" id="wallType">
                 <option value="">Custom</option>
                 <option value="4.5">4.5 in single-brick wall</option>
                 <option value="9">9 in double-brick wall</option>
@@ -107,9 +123,9 @@
           </section>
 
           <section class="card">
-            <h2><span class="step">2</span> Openings (doors &amp; windows)</h2>
+            <h3 class="card__title"><span class="step badge">2</span> Openings (doors &amp; windows)</h3>
             <div class="openings" id="openings"></div>
-            <button class="btn-add" id="addOpening" type="button">
+            <button class="btn btn--block btn-add" id="addOpening" type="button">
               + Add opening
             </button>
             <p class="hint">
@@ -119,11 +135,11 @@
           </section>
 
           <section class="card">
-            <h2><span class="step">3</span> Brick &amp; mortar</h2>
-            <div class="row two">
+            <h3 class="card__title"><span class="step badge">3</span> Brick &amp; mortar</h3>
+            <div class="grid-2">
               <div class="field">
-                <label for="preset">Brick size preset</label>
-                <select id="preset">
+                <label class="label" for="preset">Brick size preset</label>
+                <select class="select" id="preset">
                   <option value="9,4.5,3,in">Standard 9 × 4.5 × 3 in</option>
                   <option value="190,90,90,mm">Modular 190 × 90 × 90 mm</option>
                   <option value="215,102.5,65,mm">
@@ -136,31 +152,31 @@
                 </select>
               </div>
               <div class="field">
-                <label for="bUnit">Brick unit</label>
-                <select id="bUnit">
+                <label class="label" for="bUnit">Brick unit</label>
+                <select class="select" id="bUnit">
                   <option value="in">Inches</option>
                   <option value="mm">Millimetres</option>
                 </select>
               </div>
             </div>
-            <div class="row">
-              <div>
-                <label for="bl">Brick length</label
-                ><input id="bl" type="number" min="0" step="any" value="9" />
+            <div class="cols-3">
+              <div class="field">
+                <label class="label" for="bl">Brick length</label
+                ><input class="input" id="bl" type="number" min="0" step="any" value="9" />
               </div>
-              <div>
-                <label for="bw">Brick width</label
-                ><input id="bw" type="number" min="0" step="any" value="4.5" />
+              <div class="field">
+                <label class="label" for="bw">Brick width</label
+                ><input class="input" id="bw" type="number" min="0" step="any" value="4.5" />
               </div>
-              <div>
-                <label for="bh">Brick height</label
-                ><input id="bh" type="number" min="0" step="any" value="3" />
+              <div class="field">
+                <label class="label" for="bh">Brick height</label
+                ><input class="input" id="bh" type="number" min="0" step="any" value="3" />
               </div>
             </div>
-            <div class="row two" style="margin-top: 10px">
-              <div>
-                <label for="mortar">Mortar joint (in brick unit)</label
-                ><input
+            <div class="grid-2 gap-top">
+              <div class="field">
+                <label class="label" for="mortar">Mortar joint (in brick unit)</label
+                ><input class="input"
                   id="mortar"
                   type="number"
                   min="0"
@@ -168,9 +184,9 @@
                   value="0.5"
                 />
               </div>
-              <div>
-                <label for="waste">Wastage (%)</label
-                ><input
+              <div class="field">
+                <label class="label" for="waste">Wastage (%)</label
+                ><input class="input"
                   id="waste"
                   type="number"
                   min="0"
@@ -187,20 +203,20 @@
           </section>
 
           <section class="card">
-            <h2><span class="step">4</span> Mortar mix (optional)</h2>
-            <div class="row two">
-              <div>
-                <label for="mix">Cement : Sand ratio</label>
-                <select id="mix">
+            <h3 class="card__title"><span class="step badge">4</span> Mortar mix (optional)</h3>
+            <div class="grid-2">
+              <div class="field">
+                <label class="label" for="mix">Cement : Sand ratio</label>
+                <select class="select" id="mix">
                   <option value="3,1,4">1 : 3</option>
                   <option value="4,1,5" selected>1 : 4</option>
                   <option value="5,1,6">1 : 5</option>
                   <option value="6,1,7">1 : 6</option>
                 </select>
               </div>
-              <div>
-                <label for="dry">Dry volume factor</label>
-                <input
+              <div class="field">
+                <label class="label" for="dry">Dry volume factor</label>
+                <input class="input"
                   id="dry"
                   type="number"
                   min="1"
@@ -214,7 +230,7 @@
 
         <!-- RESULTS -->
         <div>
-          <div class="result-main">
+          <div class="card result-main">
             <div class="sub">Bricks needed (with wastage)</div>
             <div class="big" id="finalBricks">0</div>
             <div class="sub" id="baseBricks">0 bricks before wastage</div>
@@ -223,33 +239,29 @@
           </div>
 
           <section class="card">
-            <h2>Step-by-step working</h2>
-            <table id="working"></table>
-            <div class="warn" id="warn"></div>
+            <h3 class="card__title">Step-by-step working</h3>
+            <table class="table" id="working"></table>
+            <div class="warn msg is-error" id="warn"></div>
           </section>
 
           <section class="card">
-            <h2>Rule-of-thumb check</h2>
-            <div
-              id="thumb"
-              class="hint"
-              style="font-size: 0.9rem; margin: 0"
-            ></div>
+            <h3 class="card__title">Rule-of-thumb check</h3>
+            <div id="thumb" class="hint thumb"></div>
           </section>
 
           <section class="card">
-            <h2>Mortar estimate</h2>
-            <table id="mortarTable"></table>
+            <h3 class="card__title">Mortar estimate</h3>
+            <table class="table" id="mortarTable"></table>
           </section>
 
           <section class="card">
-            <h2>Cost estimate</h2>
-            <table id="costTable"></table>
+            <h3 class="card__title">Cost estimate</h3>
+            <table class="table" id="costTable"></table>
           </section>
 
           <section class="card">
-            <h2>Tips</h2>
-            <ul class="tips">
+            <h3 class="card__title">Tips</h3>
+            <ul class="tips muted">
               <li>Measure everything in the same unit before calculating.</li>
               <li>
                 Subtract door and window volumes; large openings change the
@@ -263,14 +275,14 @@
           </section>
 
           <div class="actions">
-            <button type="button" id="printBtn">Print</button>
-            <button type="button" id="copyBtn" class="primary">
+            <button type="button" id="printBtn" class="btn">Print</button>
+            <button type="button" id="copyBtn" class="btn btn--primary primary">
               Copy summary
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </main>
 
     <script src="script.js"></script>
     <script src="print-estimates.js"></script>
