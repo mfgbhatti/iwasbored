@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Image + Text Maker &middot; mfgbhatti</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/site.css" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="../assets/js/theme.js"></script>
+    <!-- Icons -->
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="144x144"
+      href="../assets/img/apple-touch-icon-144-precomposed.png"
+    />
+    <link rel="shortcut icon" href="../assets/img/favicon.ico" />
+  </head>
+  <body>
+    <main class="page page--wide">
+      <div class="site-bar">
+        <a class="back" href="../">&larr; projects</a>
+        <button class="theme-toggle" type="button" data-theme-toggle>
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+      <header class="page-head">
+        <h1>image &amp; text maker</h1>
+        <p>
+          add an image and your text, pick a typeface for each line, then
+          download the result as a png.
+        </p>
+      </header>
+
+      <div class="layout">
+        <!-- PREVIEW -->
+        <div class="preview">
+          <section class="card">
+            <h3 class="card__title">Preview</h3>
+            <canvas id="c" width="800" height="500"></canvas>
+            <p class="hint" id="hint">Choose an image to begin.</p>
+            <p class="dims" id="dims"></p>
+            <button id="download" class="btn btn--primary btn--block" type="button" disabled>
+              Download PNG
+            </button>
+          </section>
+        </div>
+
+        <!-- SETTINGS -->
+        <div>
+          <section class="card">
+            <h3 class="card__title">Image</h3>
+            <div class="field">
+              <label class="label" for="file">Choose an image</label>
+              <input class="input" type="file" id="file" accept="image/*" />
+            </div>
+          </section>
+
+          <section class="card">
+            <h3 class="card__title"><span class="step badge">1</span> Output size</h3>
+            <div class="stack">
+              <div id="sizes" class="sizes" role="group" aria-label="Output size"></div>
+              <div class="grid-2">
+                <div class="field">
+                  <label class="label" for="fit">Fit</label>
+                  <select class="select" id="fit">
+                    <option value="cover" selected>Fill (crop)</option>
+                    <option value="contain">Fit (bars)</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label class="label" for="fitBg">Bar color</label>
+                  <input type="color" id="fitBg" value="#000000" />
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="posX"><span>Image position, left to right (%)</span><span class="num" id="posXVal">50</span></label>
+                <input type="range" id="posX" min="0" max="100" step="1" value="50" />
+              </div>
+              <div class="field">
+                <label class="label" for="posY"><span>Image position, top to bottom (%)</span><span class="num" id="posYVal">50</span></label>
+                <input type="range" id="posY" min="0" max="100" step="1" value="50" />
+              </div>
+              <p class="hint">Original keeps the uploaded image's own size. Text and watermark scale with the output size.</p>
+            </div>
+          </section>
+
+          <section class="card">
+            <h3 class="card__title"><span class="step badge">2</span> Text 1</h3>
+            <div class="stack">
+              <div class="field">
+                <label class="label" for="text1">Text</label>
+                <textarea class="textarea" id="text1">Your text here</textarea>
+              </div>
+              <div class="grid-2">
+                <div class="field">
+                  <label class="label" for="font1">Font</label>
+                  <select class="select" id="font1"></select>
+                </div>
+                <div class="field">
+                  <label class="label" for="align1">Justification</label>
+                  <select class="select" id="align1">
+                    <option value="center" selected>Center</option>
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                    <option value="justify">Justify</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="size1"><span>Size (% of image width)</span><span class="num" id="sizeVal1">8</span></label>
+                <input type="range" id="size1" min="1" max="30" step="0.5" value="8" />
+              </div>
+              <div class="field">
+                <label class="label" for="y1"><span>Vertical position (% from top)</span><span class="num" id="yVal1">30</span></label>
+                <input type="range" id="y1" min="0" max="100" step="1" value="30" />
+              </div>
+              <div class="field">
+                <label class="label" for="color1">Color</label>
+                <input type="color" id="color1" value="#ffffff" />
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <h3 class="card__title"><span class="step badge">3</span> Text 2</h3>
+            <div class="stack">
+              <div class="field">
+                <label class="label" for="text2">Text</label>
+                <textarea class="textarea" id="text2">Second text</textarea>
+              </div>
+              <div class="grid-2">
+                <div class="field">
+                  <label class="label" for="font2">Font</label>
+                  <select class="select" id="font2"></select>
+                </div>
+                <div class="field">
+                  <label class="label" for="align2">Justification</label>
+                  <select class="select" id="align2">
+                    <option value="center" selected>Center</option>
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                    <option value="justify">Justify</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="size2"><span>Size (% of image width)</span><span class="num" id="sizeVal2">6</span></label>
+                <input type="range" id="size2" min="1" max="30" step="0.5" value="6" />
+              </div>
+              <div class="field">
+                <label class="label" for="y2"><span>Vertical position (% from top)</span><span class="num" id="yVal2">78</span></label>
+                <input type="range" id="y2" min="0" max="100" step="1" value="78" />
+              </div>
+              <div class="field">
+                <label class="label" for="color2">Color</label>
+                <input type="color" id="color2" value="#ffffff" />
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <h3 class="card__title"><span class="step badge">4</span> Both texts</h3>
+            <div class="stack">
+              <div class="grid-2">
+                <label class="check"><input type="checkbox" id="bold" checked /> Bold</label>
+                <label class="check"><input type="checkbox" id="upper" /> Uppercase</label>
+              </div>
+              <label class="check"><input type="checkbox" id="band" /> Background band behind text</label>
+              <label class="check"><input type="checkbox" id="shadow" checked /> Drop shadow</label>
+              <div class="field">
+                <label class="label" for="shadowColor">Shadow color</label>
+                <input type="color" id="shadowColor" value="#000000" />
+              </div>
+              <div class="field">
+                <label class="label" for="shadowBlur"><span>Shadow blur (%)</span><span class="num" id="shadowBlurVal">10</span></label>
+                <input type="range" id="shadowBlur" min="0" max="40" step="1" value="10" />
+              </div>
+              <div class="field">
+                <label class="label" for="shadowDist"><span>Shadow distance (%)</span><span class="num" id="shadowDistVal">5</span></label>
+                <input type="range" id="shadowDist" min="0" max="30" step="1" value="5" />
+              </div>
+              <div class="field">
+                <label class="label" for="stroke">Outline color</label>
+                <input type="color" id="stroke" value="#000000" />
+              </div>
+              <div class="field">
+                <label class="label" for="strokeW"><span>Outline width (%)</span><span class="num" id="strokeVal">0</span></label>
+                <input type="range" id="strokeW" min="0" max="25" step="1" value="0" />
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <h3 class="card__title"><span class="step badge">5</span> Watermark</h3>
+            <div class="stack">
+              <label class="check"><input type="checkbox" id="wm" checked /> Show logo + URL</label>
+              <div class="field">
+                <label class="label" for="wmSize"><span>Size (% of image width)</span><span class="num" id="wmSizeVal">6</span></label>
+                <input type="range" id="wmSize" min="2" max="20" step="0.5" value="6" />
+              </div>
+              <div class="field">
+                <label class="label" for="wmFile">Logo file</label>
+                <input class="input" type="file" id="wmFile" accept="image/*" />
+                <p class="hint">Only needed if urduforum-logo.png doesn't load.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
