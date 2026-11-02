@@ -166,7 +166,44 @@
           </section>
 
           <section class="card">
-            <h3 class="card__title"><span class="step badge">4</span> Both texts</h3>
+            <h3 class="card__title"><span class="step badge">4</span> Text 3 (poet name)</h3>
+            <div class="stack">
+              <div class="field">
+                <label class="label" for="text3">Text</label>
+                <textarea class="textarea" id="text3" placeholder="Poet name"></textarea>
+              </div>
+              <div class="grid-2">
+                <div class="field">
+                  <label class="label" for="font3">Font</label>
+                  <select class="select" id="font3"></select>
+                </div>
+                <div class="field">
+                  <label class="label" for="align3">Justification</label>
+                  <select class="select" id="align3">
+                    <option value="center" selected>Center</option>
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                    <option value="justify">Justify</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="size3"><span>Size (% of image width)</span><span class="num" id="sizeVal3">5</span></label>
+                <input type="range" id="size3" min="1" max="30" step="0.5" value="5" />
+              </div>
+              <div class="field">
+                <label class="label" for="y3"><span>Gap below text 1 (% of image height)</span><span class="num" id="yVal3">0</span></label>
+                <input type="range" id="y3" min="-10" max="20" step="0.5" value="0" />
+              </div>
+              <div class="field">
+                <label class="label" for="color3">Color</label>
+                <input type="color" id="color3" value="#ffffff" />
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <h3 class="card__title"><span class="step badge">5</span> All texts</h3>
             <div class="stack">
               <div class="grid-2">
                 <label class="check"><input type="checkbox" id="bold" checked /> Bold</label>
@@ -198,7 +235,7 @@
           </section>
 
           <section class="card">
-            <h3 class="card__title"><span class="step badge">5</span> Watermark</h3>
+            <h3 class="card__title"><span class="step badge">6</span> Watermark</h3>
             <div class="stack">
               <label class="check"><input type="checkbox" id="wm" checked /> Show logo + URL</label>
               <div class="field">

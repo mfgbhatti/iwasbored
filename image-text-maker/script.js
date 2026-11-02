@@ -30,7 +30,8 @@
     { label: 'Amiri', value: "'Amiri', serif", web: 'Amiri' },
   ]
 
-  const TEXTS = [1, 2].map((n) => ({
+  // 1 = main text, 2 = second text, 3 = poet name
+  const TEXTS = [1, 2, 3].map((n) => ({
     text: $('text' + n),
     font: $('font' + n),
     align: $('align' + n),
@@ -166,14 +167,19 @@
     } else {
       ctx.drawImage(img, 0, 0)
     }
-    TEXTS.forEach(drawText)
+    // The poet name (text 3) sits under text 1; its slider is the gap below it.
+    const text1Bottom = drawText(TEXTS[0])
+    drawText(TEXTS[1])
+    drawText(TEXTS[2], text1Bottom ?? (H * parseFloat(TEXTS[0].y.value)) / 100)
     drawWatermark()
     $('dims').textContent = W + ' × ' + H + ' px · PNG'
   }
 
-  function drawText(t) {
+  // Returns the y of the bottom of the drawn block (null if nothing was drawn).
+  // With `belowY`, the text is placed under that y instead of at its own position.
+  function drawText(t, belowY) {
     let text = t.text.value
-    if (!text.trim()) return
+    if (!text.trim()) return null
     if ($('upper').checked) text = text.toUpperCase()
 
     const W = canvas.width,
@@ -188,21 +194,45 @@
     ctx.direction = rtl ? 'rtl' : 'ltr'
     ctx.lineJoin = 'round'
 
-    const left = W * 0.05,
+    let left = W * 0.05,
       right = W * 0.95,
       boxW = right - left
     const al = t.align.value
     const justify = al === 'justify'
-    const drawAlign = justify ? (rtl ? 'right' : 'left') : al
+
+    const lines = wrap(text, boxW)
+    if (justify) {
+      // Justified block: every line (the last one too) is stretched to the width
+      // of the longest line, and that block is centred on the image.
+      // Widths here are *ink* widths: Nastaliq glyphs overhang their advance
+      // box, so advance widths would leave the lines visibly misaligned.
+      ctx.textAlign = 'left'
+      boxW = Math.min(
+        boxW,
+        Math.max(
+          ...lines.map((l) => {
+            const m = ctx.measureText(l.t)
+            return m.actualBoundingBoxLeft + m.actualBoundingBoxRight
+          }),
+        ),
+      )
+      left = (W - boxW) / 2
+      right = left + boxW
+    }
+
+    const drawAlign = justify ? 'center' : al
     const cx =
       drawAlign === 'left' ? left : drawAlign === 'right' ? right : W / 2
     ctx.textAlign = drawAlign
 
-    const lines = wrap(text, boxW)
     // Nastaliq script is tall, so give it more line spacing
-    const lh = fs * (/Nastaliq/i.test(t.font.value) ? 1.9 : 1.2)
+    // (font values are spelled "Nastaleeq", so match both spellings)
+    const lh = fs * (/Nastal(iq|eeq)/i.test(t.font.value) ? 1.9 : 1.2)
     const totalH = lh * lines.length
-    const cy = (H * parseFloat(t.y.value)) / 100
+    const cy =
+      belowY == null
+        ? (H * parseFloat(t.y.value)) / 100
+        : belowY + (H * parseFloat(t.y.value)) / 100 + totalH / 2
     const startY = cy - totalH / 2 + lh / 2
 
     if ($('band').checked) {
@@ -241,23 +271,46 @@
       const y = startY + i * lh
       const words = line.t.split(' ').filter(Boolean)
 
-      if (justify && !line.last && words.length > 1) {
-        // spread words so the line fills the whole box
-        const widths = words.map((w) => ctx.measureText(w).width)
-        const space =
-          (boxW - widths.reduce((a, b) => a + b, 0)) / (words.length - 1)
+      if (justify && words.length > 1) {
+        // Spread words so the ink of the first and last word lands exactly on
+        // the block edges. Every word is drawn left-anchored (x = its left
+        // advance edge), so the result doesn't depend on how a browser
+        // handles textAlign together with rtl.
+        ctx.textAlign = 'left'
+        const m = words.map((w) => ctx.measureText(w))
+        const n = words.length
+        const first = m[0],
+          last = m[n - 1]
+        let x, space
+        if (rtl) {
+          // words run right to left: word 0 is the rightmost
+          const x0 = right - first.actualBoundingBoxRight
+          const xLast = left + last.actualBoundingBoxLeft
+          const rest = m.slice(1).reduce((a, k) => a + k.width, 0)
+          space = (x0 - rest - xLast) / (n - 1)
+          x = x0
+        } else {
+          const x0 = left + first.actualBoundingBoxLeft
+          const xLast = right - last.actualBoundingBoxRight
+          const rest = m.slice(0, n - 1).reduce((a, k) => a + k.width, 0)
+          space = (xLast - x0 - rest) / (n - 1)
+          x = x0
+        }
         if (space >= 0) {
-          let x = rtl ? right : left
           words.forEach((w, k) => {
+            if (rtl && k > 0) x -= space + m[k].width
             paint(w, x, y)
-            x += (rtl ? -1 : 1) * (widths[k] + space)
+            if (!rtl) x += m[k].width + space
           })
           return
         }
       }
-      paint(line.t, cx, y, boxW)
+      // a single word can't be spread, so in a justified block it is centred
+      ctx.textAlign = justify ? 'center' : drawAlign
+      paint(line.t, justify ? W / 2 : cx, y, boxW)
     })
     ctx.restore()
+    return cy + totalH / 2
   }
 
   // ---- watermark: logo with URL text underneath, bottom-left ----
