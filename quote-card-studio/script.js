@@ -8,13 +8,13 @@
 
   var FONTS = [
     { id: 'playfair', name: 'Playfair Display', tag: 'Elegant serif', css: '"Playfair Display"', fb: 'Georgia, serif', weight: 400, style: 'italic', lh: 1.28, scale: 1, upper: false, ls: 0, ui: 20 },
-    { id: 'cormorant', name: 'Cormorant Garamond', tag: 'Refined serif', css: '"Cormorant Garamond"', fb: 'Georgia, serif', weight: 600, style: 'normal', lh: 1.22, scale: 1.12, upper: false, ls: 0, ui: 20 },
-    { id: 'abril', name: 'Abril Fatface', tag: 'Bold display', css: '"Abril Fatface"', fb: 'Georgia, serif', weight: 400, style: 'normal', lh: 1.14, scale: 0.92, upper: false, ls: 0, ui: 19 },
+    { id: 'story', name: 'Story Script', tag: 'Storybook script', css: '"Story Script"', fb: 'cursive', weight: 400, style: 'normal', lh: 1.3, scale: 0.95, upper: false, ls: 0, ui: 18 },
+    { id: 'fleur', name: 'Fleur De Leah', tag: 'Flourished script', css: '"Fleur De Leah"', fb: 'cursive', weight: 400, style: 'normal', lh: 1.45, scale: 1.18, upper: false, ls: 0, ui: 22 },
     { id: 'pacifico', name: 'Pacifico', tag: 'Casual script', css: '"Pacifico"', fb: 'cursive', weight: 400, style: 'normal', lh: 1.5, scale: 0.8, upper: false, ls: 0, ui: 18 },
-    { id: 'greatvibes', name: 'Great Vibes', tag: 'Formal script', css: '"Great Vibes"', fb: 'cursive', weight: 400, style: 'normal', lh: 1.3, scale: 1.3, upper: false, ls: 0, ui: 26 },
+    { id: 'parisienne', name: 'Parisienne', tag: 'Elegant script', css: '"Parisienne"', fb: 'cursive', weight: 400, style: 'normal', lh: 1.45, scale: 1.2, upper: false, ls: 0, ui: 24 },
     { id: 'bebas', name: 'Bebas Neue', tag: 'Tall caps', css: '"Bebas Neue"', fb: 'Impact, sans-serif', weight: 400, style: 'normal', lh: 1.06, scale: 1.25, upper: true, ls: 0.04, ui: 22 },
     { id: 'lora', name: 'Lora', tag: 'Literary serif', css: '"Lora"', fb: 'Georgia, serif', weight: 400, style: 'normal', lh: 1.4, scale: 0.98, upper: false, ls: 0, ui: 19 },
-    { id: 'caveat', name: 'Caveat', tag: 'Handwritten', css: '"Caveat"', fb: 'cursive', weight: 700, style: 'normal', lh: 1.2, scale: 1.3, upper: false, ls: 0, ui: 24 }
+    { id: 'dynalight', name: 'Dynalight', tag: 'Brush script', css: '"Dynalight"', fb: 'cursive', weight: 400, style: 'normal', lh: 1.3, scale: 1.3, upper: false, ls: 0, ui: 24 }
   ];
 
   var SIZES = [
