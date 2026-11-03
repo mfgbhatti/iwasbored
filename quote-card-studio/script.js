@@ -315,7 +315,7 @@
     $('cBgA').value = S.bgA; $('cBgB').value = S.bgB; $('cCard').value = S.card; $('cText').value = S.text;
     $('opacity').value = S.opacity; $('radius').value = S.radius; $('margin').value = S.margin;
     $('fsize').value = S.fontSize; $('fsize').disabled = S.auto;
-    $('auto').checked = S.auto; $('mark').checked = S.mark; $('frame').checked = S.frame;
+    ['auto', 'mark', 'frame'].forEach(function (k) { $(k).setAttribute('aria-pressed', S[k] ? 'true' : 'false'); });
     syncPresets(); syncOutputs();
   }
 
@@ -332,8 +332,8 @@
   on('radius', function (t) { S.radius = +t.value; });
   on('margin', function (t) { S.margin = +t.value; });
   on('fsize', function (t) { S.fontSize = +t.value; });
-  [['auto', 'auto'], ['mark', 'mark'], ['frame', 'frame']].forEach(function (p) {
-    $(p[0]).addEventListener('change', function (e) { S[p[1]] = e.target.checked; syncUI(); schedule(); });
+  ['auto', 'mark', 'frame'].forEach(function (k) {
+    $(k).addEventListener('click', function () { S[k] = !S[k]; syncUI(); schedule(); });
   });
   Array.prototype.forEach.call(document.querySelectorAll('[data-align]'), function (b) {
     b.addEventListener('click', function () { S.align = b.dataset.align; syncUI(); schedule(); });

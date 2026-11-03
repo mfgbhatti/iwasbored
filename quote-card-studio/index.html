@@ -100,42 +100,54 @@
             <h3 class="card__title"><span class="step badge">4</span> Colors</h3>
             <div class="stack">
               <div id="presets" class="presets" role="group" aria-label="Color sets"></div>
-              <div class="grid-2">
-                <div class="field">
-                  <label class="label" for="cBgA">Background</label>
-                  <input id="cBgA" type="color" />
+              <details class="more">
+                <summary>Custom colors, opacity, radius and margin</summary>
+                <div class="stack">
+                  <div class="grid-2">
+                    <div class="field">
+                      <label class="label" for="cBgA">Background</label>
+                      <input id="cBgA" type="color" />
+                    </div>
+                    <div class="field">
+                      <label class="label" for="cBgB">Background 2</label>
+                      <input id="cBgB" type="color" />
+                    </div>
+                    <div class="field">
+                      <label class="label" for="cCard">Card</label>
+                      <input id="cCard" type="color" />
+                    </div>
+                    <div class="field">
+                      <label class="label" for="cText">Text</label>
+                      <input id="cText" type="color" />
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label class="label" for="opacity"><span>Card opacity</span><output id="o-opacity" for="opacity"></output></label>
+                    <input id="opacity" type="range" min="0" max="100" step="1" />
+                  </div>
+                  <div class="field">
+                    <label class="label" for="radius"><span>Corner radius</span><output id="o-radius" for="radius"></output></label>
+                    <input id="radius" type="range" min="0" max="120" step="1" />
+                  </div>
+                  <div class="field">
+                    <label class="label" for="margin"><span>Card margin</span><output id="o-margin" for="margin"></output></label>
+                    <input id="margin" type="range" min="0" max="16" step="1" />
+                  </div>
                 </div>
-                <div class="field">
-                  <label class="label" for="cBgB">Background 2</label>
-                  <input id="cBgB" type="color" />
-                </div>
-                <div class="field">
-                  <label class="label" for="cCard">Card</label>
-                  <input id="cCard" type="color" />
-                </div>
-                <div class="field">
-                  <label class="label" for="cText">Text</label>
-                  <input id="cText" type="color" />
-                </div>
-              </div>
-              <div class="field">
-                <label class="label" for="opacity"><span>Card opacity</span><output id="o-opacity" for="opacity"></output></label>
-                <input id="opacity" type="range" min="0" max="100" step="1" />
-              </div>
-              <div class="field">
-                <label class="label" for="radius"><span>Corner radius</span><output id="o-radius" for="radius"></output></label>
-                <input id="radius" type="range" min="0" max="120" step="1" />
-              </div>
-              <div class="field">
-                <label class="label" for="margin"><span>Card margin</span><output id="o-margin" for="margin"></output></label>
-                <input id="margin" type="range" min="0" max="16" step="1" />
-              </div>
+              </details>
             </div>
           </section>
 
           <section class="card">
             <h3 class="card__title"><span class="step badge">5</span> Text style</h3>
             <div class="stack">
+              <div class="chips" role="group" aria-label="Text options">
+                <button id="auto" class="btn chip" type="button">Auto-fit to card</button>
+                <button id="mark" class="btn chip" type="button">Opening quote mark</button>
+                <button id="frame" class="btn chip" type="button">Frame line</button>
+                <button class="btn chip" type="button" data-align="left">Align left</button>
+                <button class="btn chip" type="button" data-align="center">Align center</button>
+              </div>
               <div class="field">
                 <label class="label" for="fsize"><span>Font size</span><output id="o-fsize" for="fsize"></output></label>
                 <input id="fsize" type="range" min="24" max="140" step="1" />
@@ -143,13 +155,6 @@
               <p id="fitnote" class="hint" hidden>
                 The text runs past the card. Lower the size or turn on auto-fit.
               </p>
-              <label class="check"><input id="auto" type="checkbox" /> Auto-fit to card</label>
-              <label class="check"><input id="mark" type="checkbox" /> Opening quote mark</label>
-              <label class="check"><input id="frame" type="checkbox" /> Frame line</label>
-              <div class="grid-2" role="group" aria-label="Text alignment">
-                <button class="btn chip" type="button" data-align="left">Align left</button>
-                <button class="btn chip" type="button" data-align="center">Align center</button>
-              </div>
             </div>
           </section>
         </div>
