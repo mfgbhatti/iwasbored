@@ -30,11 +30,20 @@
     { label: 'Amiri', value: "'Amiri', serif", web: 'Amiri' },
   ]
 
-  // 1 = main text, 2 = second text, 3 = poet name
+  const ALIGNS = [
+    { value: 'center', label: 'Center' },
+    { value: 'left', label: 'Left' },
+    { value: 'right', label: 'Right' },
+    { value: 'justify', label: 'Justify' },
+  ]
+  const JAMEEL = FONTS.find((f) => f.web === 'JameelNoriNastaleeq')
+
+  // 1 = main text, 2 = second text, 3 = poet name.
+  // `font` and `align` are button groups; they only hold the chosen value.
   const TEXTS = [1, 2, 3].map((n) => ({
     text: $('text' + n),
-    font: $('font' + n),
-    align: $('align' + n),
+    font: { value: (n === 2 ? FONTS[0] : JAMEEL).value, el: $('font' + n) },
+    align: { value: n === 3 ? 'center' : 'justify', el: $('align' + n) },
     size: $('size' + n),
     sizeVal: $('sizeVal' + n),
     y: $('y' + n),
@@ -42,10 +51,57 @@
     color: $('color' + n),
   }))
 
+  // A row of option buttons in `box`; `holder.value` follows the pressed one.
+  function syncPicker(box, holder) {
+    Array.prototype.forEach.call(box.children, (b) =>
+      b.setAttribute(
+        'aria-pressed',
+        b.dataset.value === holder.value ? 'true' : 'false',
+      ),
+    )
+  }
+  function buildPicker(holder, items, decorate) {
+    items.forEach((it) => {
+      const b = document.createElement('button')
+      b.type = 'button'
+      b.className = 'opt'
+      b.dataset.value = it.value
+      decorate(b, it)
+      b.addEventListener('click', () => {
+        holder.value = it.value
+        syncPicker(holder.el, holder)
+        onChange()
+      })
+      holder.el.appendChild(b)
+    })
+    syncPicker(holder.el, holder)
+  }
+
   TEXTS.forEach((t) => {
-    FONTS.forEach((f) => t.font.add(new Option(f.label, f.value)))
-    t.font.selectedIndex = 0
+    buildPicker(t.font, FONTS, (b, f) => {
+      b.classList.add('opt--font')
+      const name = document.createElement('span')
+      name.textContent = f.label
+      b.appendChild(name)
+      if (f.web) {
+        // Urdu/Arabic fonts have no Latin glyphs, so preview them with a sample word
+        const s = document.createElement('span')
+        s.className = 'sample'
+        s.dir = 'rtl'
+        s.textContent = 'اردو'
+        s.style.fontFamily = f.value
+        b.appendChild(s)
+      } else {
+        name.style.fontFamily = f.value
+      }
+    })
+    buildPicker(t.align, ALIGNS, (b, a) => {
+      b.textContent = a.label
+    })
   })
+
+  // On/off buttons (aria-pressed)
+  const on = (id) => $(id).getAttribute('aria-pressed') === 'true'
 
   function loadWebFonts() {
     const jobs = []
@@ -180,7 +236,7 @@
   function drawText(t, belowY) {
     let text = t.text.value
     if (!text.trim()) return null
-    if ($('upper').checked) text = text.toUpperCase()
+    if (on('upper')) text = text.toUpperCase()
 
     const W = canvas.width,
       H = canvas.height
@@ -189,7 +245,7 @@
     const rtl = RTL_RE.test(text)
 
     ctx.save()
-    ctx.font = `${$('bold').checked ? 'bold ' : ''}${fs}px ${t.font.value}`
+    ctx.font = `${on('bold') ? 'bold ' : ''}${fs}px ${t.font.value}`
     ctx.textBaseline = 'middle'
     ctx.direction = rtl ? 'rtl' : 'ltr'
     ctx.lineJoin = 'round'
@@ -235,12 +291,12 @@
         : belowY + (H * parseFloat(t.y.value)) / 100 + totalH / 2
     const startY = cy - totalH / 2 + lh / 2
 
-    if ($('band').checked) {
+    if (on('band')) {
       ctx.fillStyle = 'rgba(0,0,0,0.55)'
       ctx.fillRect(0, cy - totalH / 2 - fs * 0.3, W, totalH + fs * 0.6)
     }
 
-    const useShadow = $('shadow').checked
+    const useShadow = on('shadow')
     const setShadow = (on) => {
       if (on) {
         ctx.shadowColor = $('shadowColor').value
@@ -341,7 +397,7 @@
   })
 
   function drawWatermark() {
-    if (!$('wm').checked) return
+    if (!$('wmOn').checked) return
     const W = canvas.width,
       H = canvas.height
     const h = (W * parseFloat($('wmSize').value)) / 100 // logo height
@@ -393,14 +449,9 @@
   const controlIds = [
     'stroke',
     'strokeW',
-    'bold',
-    'upper',
-    'band',
-    'shadow',
     'shadowColor',
     'shadowBlur',
     'shadowDist',
-    'wm',
     'wmSize',
     'fit',
     'posX',
@@ -422,10 +473,17 @@
   }
   controlIds.forEach((id) => $(id).addEventListener('input', onChange))
   TEXTS.forEach((t) =>
-    [t.text, t.font, t.align, t.size, t.y, t.color].forEach((el) =>
+    [t.text, t.size, t.y, t.color].forEach((el) =>
       el.addEventListener('input', onChange),
     ),
   )
+  ;['bold', 'upper', 'band', 'shadow'].forEach((id) =>
+    $(id).addEventListener('click', () => {
+      $(id).setAttribute('aria-pressed', on(id) ? 'false' : 'true')
+      onChange()
+    }),
+  )
+  ;['wmOn', 'wmOff'].forEach((id) => $(id).addEventListener('change', onChange))
 
   syncSizeUI()
 

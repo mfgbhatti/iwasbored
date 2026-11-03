@@ -66,28 +66,33 @@
             <h3 class="card__title"><span class="step badge">1</span> Output size</h3>
             <div class="stack">
               <div id="sizes" class="sizes" role="group" aria-label="Output size"></div>
-              <div class="grid-2">
-                <div class="field">
-                  <label class="label" for="fit">Fit</label>
-                  <select class="select" id="fit">
-                    <option value="cover" selected>Fill (crop)</option>
-                    <option value="contain">Fit (bars)</option>
-                  </select>
+              <details class="more">
+                <summary>Fit and image position</summary>
+                <div class="stack">
+                  <div class="grid-2">
+                    <div class="field">
+                      <label class="label" for="fit">Fit</label>
+                      <select class="select" id="fit">
+                        <option value="cover" selected>Fill (crop)</option>
+                        <option value="contain">Fit (bars)</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label class="label" for="fitBg">Bar color</label>
+                      <input type="color" id="fitBg" value="#000000" />
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label class="label" for="posX"><span>Image position, left to right (%)</span><span class="num" id="posXVal">50</span></label>
+                    <input type="range" id="posX" min="0" max="100" step="1" value="50" />
+                  </div>
+                  <div class="field">
+                    <label class="label" for="posY"><span>Image position, top to bottom (%)</span><span class="num" id="posYVal">50</span></label>
+                    <input type="range" id="posY" min="0" max="100" step="1" value="50" />
+                  </div>
+                  <p class="hint">Original keeps the uploaded image's own size. Text and watermark scale with the output size.</p>
                 </div>
-                <div class="field">
-                  <label class="label" for="fitBg">Bar color</label>
-                  <input type="color" id="fitBg" value="#000000" />
-                </div>
-              </div>
-              <div class="field">
-                <label class="label" for="posX"><span>Image position, left to right (%)</span><span class="num" id="posXVal">50</span></label>
-                <input type="range" id="posX" min="0" max="100" step="1" value="50" />
-              </div>
-              <div class="field">
-                <label class="label" for="posY"><span>Image position, top to bottom (%)</span><span class="num" id="posYVal">50</span></label>
-                <input type="range" id="posY" min="0" max="100" step="1" value="50" />
-              </div>
-              <p class="hint">Original keeps the uploaded image's own size. Text and watermark scale with the output size.</p>
+              </details>
             </div>
           </section>
 
@@ -98,33 +103,31 @@
                 <label class="label" for="text1">Text</label>
                 <textarea class="textarea" id="text1">Your text here</textarea>
               </div>
-              <div class="grid-2">
-                <div class="field">
-                  <label class="label" for="font1">Font</label>
-                  <select class="select" id="font1"></select>
+              <details class="more">
+                <summary>Font, position and color</summary>
+                <div class="stack">
+                  <div class="field">
+                    <span class="label" id="fontLabel1">Font</span>
+                    <div class="picker" id="font1" role="group" aria-labelledby="fontLabel1"></div>
+                  </div>
+                  <div class="field">
+                    <span class="label" id="alignLabel1">Justification</span>
+                    <div class="picker picker--seg" id="align1" role="group" aria-labelledby="alignLabel1"></div>
+                  </div>
+                  <div class="field">
+                    <label class="label" for="size1"><span>Size (% of image width)</span><span class="num" id="sizeVal1">8</span></label>
+                    <input type="range" id="size1" min="1" max="30" step="0.5" value="8" />
+                  </div>
+                  <div class="field">
+                    <label class="label" for="y1"><span>Vertical position (% from top)</span><span class="num" id="yVal1">30</span></label>
+                    <input type="range" id="y1" min="0" max="100" step="1" value="30" />
+                  </div>
+                  <div class="field">
+                    <label class="label" for="color1">Color</label>
+                    <input type="color" id="color1" value="#ffffff" />
+                  </div>
                 </div>
-                <div class="field">
-                  <label class="label" for="align1">Justification</label>
-                  <select class="select" id="align1">
-                    <option value="center" selected>Center</option>
-                    <option value="left">Left</option>
-                    <option value="right">Right</option>
-                    <option value="justify">Justify</option>
-                  </select>
-                </div>
-              </div>
-              <div class="field">
-                <label class="label" for="size1"><span>Size (% of image width)</span><span class="num" id="sizeVal1">8</span></label>
-                <input type="range" id="size1" min="1" max="30" step="0.5" value="8" />
-              </div>
-              <div class="field">
-                <label class="label" for="y1"><span>Vertical position (% from top)</span><span class="num" id="yVal1">30</span></label>
-                <input type="range" id="y1" min="0" max="100" step="1" value="30" />
-              </div>
-              <div class="field">
-                <label class="label" for="color1">Color</label>
-                <input type="color" id="color1" value="#ffffff" />
-              </div>
+              </details>
             </div>
           </section>
 
@@ -135,33 +138,31 @@
                 <label class="label" for="text2">Text</label>
                 <textarea class="textarea" id="text2">Second text</textarea>
               </div>
-              <div class="grid-2">
-                <div class="field">
-                  <label class="label" for="font2">Font</label>
-                  <select class="select" id="font2"></select>
+              <details class="more">
+                <summary>Font, position and color</summary>
+                <div class="stack">
+                  <div class="field">
+                    <span class="label" id="fontLabel2">Font</span>
+                    <div class="picker" id="font2" role="group" aria-labelledby="fontLabel2"></div>
+                  </div>
+                  <div class="field">
+                    <span class="label" id="alignLabel2">Justification</span>
+                    <div class="picker picker--seg" id="align2" role="group" aria-labelledby="alignLabel2"></div>
+                  </div>
+                  <div class="field">
+                    <label class="label" for="size2"><span>Size (% of image width)</span><span class="num" id="sizeVal2">6</span></label>
+                    <input type="range" id="size2" min="1" max="30" step="0.5" value="6" />
+                  </div>
+                  <div class="field">
+                    <label class="label" for="y2"><span>Vertical position (% from top)</span><span class="num" id="yVal2">78</span></label>
+                    <input type="range" id="y2" min="0" max="100" step="1" value="78" />
+                  </div>
+                  <div class="field">
+                    <label class="label" for="color2">Color</label>
+                    <input type="color" id="color2" value="#ffffff" />
+                  </div>
                 </div>
-                <div class="field">
-                  <label class="label" for="align2">Justification</label>
-                  <select class="select" id="align2">
-                    <option value="center" selected>Center</option>
-                    <option value="left">Left</option>
-                    <option value="right">Right</option>
-                    <option value="justify">Justify</option>
-                  </select>
-                </div>
-              </div>
-              <div class="field">
-                <label class="label" for="size2"><span>Size (% of image width)</span><span class="num" id="sizeVal2">6</span></label>
-                <input type="range" id="size2" min="1" max="30" step="0.5" value="6" />
-              </div>
-              <div class="field">
-                <label class="label" for="y2"><span>Vertical position (% from top)</span><span class="num" id="yVal2">78</span></label>
-                <input type="range" id="y2" min="0" max="100" step="1" value="78" />
-              </div>
-              <div class="field">
-                <label class="label" for="color2">Color</label>
-                <input type="color" id="color2" value="#ffffff" />
-              </div>
+              </details>
             </div>
           </section>
 
@@ -172,81 +173,92 @@
                 <label class="label" for="text3">Text</label>
                 <textarea class="textarea" id="text3" placeholder="Poet name"></textarea>
               </div>
-              <div class="grid-2">
-                <div class="field">
-                  <label class="label" for="font3">Font</label>
-                  <select class="select" id="font3"></select>
+              <details class="more">
+                <summary>Font, position and color</summary>
+                <div class="stack">
+                  <div class="field">
+                    <span class="label" id="fontLabel3">Font</span>
+                    <div class="picker" id="font3" role="group" aria-labelledby="fontLabel3"></div>
+                  </div>
+                  <div class="field">
+                    <span class="label" id="alignLabel3">Justification</span>
+                    <div class="picker picker--seg" id="align3" role="group" aria-labelledby="alignLabel3"></div>
+                  </div>
+                  <div class="field">
+                    <label class="label" for="size3"><span>Size (% of image width)</span><span class="num" id="sizeVal3">5</span></label>
+                    <input type="range" id="size3" min="1" max="30" step="0.5" value="5" />
+                  </div>
+                  <div class="field">
+                    <label class="label" for="y3"><span>Gap below text 1 (% of image height)</span><span class="num" id="yVal3">0</span></label>
+                    <input type="range" id="y3" min="-10" max="20" step="0.5" value="0" />
+                  </div>
+                  <div class="field">
+                    <label class="label" for="color3">Color</label>
+                    <input type="color" id="color3" value="#ffffff" />
+                  </div>
                 </div>
-                <div class="field">
-                  <label class="label" for="align3">Justification</label>
-                  <select class="select" id="align3">
-                    <option value="center" selected>Center</option>
-                    <option value="left">Left</option>
-                    <option value="right">Right</option>
-                    <option value="justify">Justify</option>
-                  </select>
-                </div>
-              </div>
-              <div class="field">
-                <label class="label" for="size3"><span>Size (% of image width)</span><span class="num" id="sizeVal3">5</span></label>
-                <input type="range" id="size3" min="1" max="30" step="0.5" value="5" />
-              </div>
-              <div class="field">
-                <label class="label" for="y3"><span>Gap below text 1 (% of image height)</span><span class="num" id="yVal3">0</span></label>
-                <input type="range" id="y3" min="-10" max="20" step="0.5" value="0" />
-              </div>
-              <div class="field">
-                <label class="label" for="color3">Color</label>
-                <input type="color" id="color3" value="#ffffff" />
-              </div>
+              </details>
             </div>
           </section>
 
           <section class="card">
             <h3 class="card__title"><span class="step badge">5</span> All texts</h3>
             <div class="stack">
-              <div class="grid-2">
-                <label class="check"><input type="checkbox" id="bold" checked /> Bold</label>
-                <label class="check"><input type="checkbox" id="upper" /> Uppercase</label>
+              <div class="toggles">
+                <button type="button" class="opt" id="bold" aria-pressed="true">Bold</button>
+                <button type="button" class="opt" id="upper" aria-pressed="false">Uppercase</button>
+                <button type="button" class="opt" id="band" aria-pressed="false">Background band</button>
+                <button type="button" class="opt" id="shadow" aria-pressed="true">Drop shadow</button>
               </div>
-              <label class="check"><input type="checkbox" id="band" /> Background band behind text</label>
-              <label class="check"><input type="checkbox" id="shadow" checked /> Drop shadow</label>
-              <div class="field">
-                <label class="label" for="shadowColor">Shadow color</label>
-                <input type="color" id="shadowColor" value="#000000" />
-              </div>
-              <div class="field">
-                <label class="label" for="shadowBlur"><span>Shadow blur (%)</span><span class="num" id="shadowBlurVal">10</span></label>
-                <input type="range" id="shadowBlur" min="0" max="40" step="1" value="10" />
-              </div>
-              <div class="field">
-                <label class="label" for="shadowDist"><span>Shadow distance (%)</span><span class="num" id="shadowDistVal">5</span></label>
-                <input type="range" id="shadowDist" min="0" max="30" step="1" value="5" />
-              </div>
-              <div class="field">
-                <label class="label" for="stroke">Outline color</label>
-                <input type="color" id="stroke" value="#000000" />
-              </div>
-              <div class="field">
-                <label class="label" for="strokeW"><span>Outline width (%)</span><span class="num" id="strokeVal">0</span></label>
-                <input type="range" id="strokeW" min="0" max="25" step="1" value="0" />
-              </div>
+              <details class="more">
+                <summary>Shadow and outline</summary>
+                <div class="stack">
+                  <div class="field">
+                    <label class="label" for="shadowColor">Shadow color</label>
+                    <input type="color" id="shadowColor" value="#000000" />
+                  </div>
+                  <div class="field">
+                    <label class="label" for="shadowBlur"><span>Shadow blur (%)</span><span class="num" id="shadowBlurVal">10</span></label>
+                    <input type="range" id="shadowBlur" min="0" max="40" step="1" value="10" />
+                  </div>
+                  <div class="field">
+                    <label class="label" for="shadowDist"><span>Shadow distance (%)</span><span class="num" id="shadowDistVal">5</span></label>
+                    <input type="range" id="shadowDist" min="0" max="30" step="1" value="5" />
+                  </div>
+                  <div class="field">
+                    <label class="label" for="stroke">Outline color</label>
+                    <input type="color" id="stroke" value="#000000" />
+                  </div>
+                  <div class="field">
+                    <label class="label" for="strokeW"><span>Outline width (%)</span><span class="num" id="strokeVal">0</span></label>
+                    <input type="range" id="strokeW" min="0" max="25" step="1" value="0" />
+                  </div>
+                </div>
+              </details>
             </div>
           </section>
 
           <section class="card">
             <h3 class="card__title"><span class="step badge">6</span> Watermark</h3>
             <div class="stack">
-              <label class="check"><input type="checkbox" id="wm" checked /> Show logo + URL</label>
-              <div class="field">
-                <label class="label" for="wmSize"><span>Size (% of image width)</span><span class="num" id="wmSizeVal">6</span></label>
-                <input type="range" id="wmSize" min="2" max="20" step="0.5" value="6" />
+              <div class="toggles" role="radiogroup" aria-label="Watermark">
+                <label class="opt-wrap"><input type="radio" name="wm" id="wmOn" checked /><span class="opt">Logo + URL</span></label>
+                <label class="opt-wrap"><input type="radio" name="wm" id="wmOff" /><span class="opt">None</span></label>
               </div>
-              <div class="field">
-                <label class="label" for="wmFile">Logo file</label>
-                <input class="input" type="file" id="wmFile" accept="image/*" />
-                <p class="hint">Only needed if urduforum-logo.png doesn't load.</p>
-              </div>
+              <details class="more">
+                <summary>Watermark size and logo</summary>
+                <div class="stack">
+                  <div class="field">
+                    <label class="label" for="wmSize"><span>Size (% of image width)</span><span class="num" id="wmSizeVal">6</span></label>
+                    <input type="range" id="wmSize" min="2" max="20" step="0.5" value="6" />
+                  </div>
+                  <div class="field">
+                    <label class="label" for="wmFile">Logo file</label>
+                    <input class="input" type="file" id="wmFile" accept="image/*" />
+                    <p class="hint">Only needed if urduforum-logo.png doesn't load.</p>
+                  </div>
+                </div>
+              </details>
             </div>
           </section>
         </div>
